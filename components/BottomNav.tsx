@@ -45,8 +45,25 @@ const tabs = [
     ),
   },
   {
+    href: "/infos",
+    label: "Infos",
+    icon: () => (
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.8}
+        className="h-6 w-6"
+      >
+        <circle cx="12" cy="12" r="8.5" />
+        <path strokeLinecap="round" d="M12 11v5.5" />
+        <circle cx="12" cy="8" r="0.9" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
+  {
     href: "/admin",
-    label: "Espace artisan",
+    label: "Espace pro",
     icon: (active: boolean) => (
       <svg
         viewBox="0 0 24 24"

@@ -33,25 +33,6 @@ export default async function Home() {
           Des créateurs locaux réunis à Vichy, chacun avec son savoir-faire et
           ses créations faites main.
         </p>
-
-        <div className="mx-auto mt-4 max-w-xs rounded-xl border border-ink/10 bg-white/60 px-4 py-3 text-left text-sm text-ink-light">
-          <p className="font-semibold text-ink">Retrouvez-nous :</p>
-          <p className="mt-1">
-            📍 Centre Commercial Les 4 Chemins
-            <br />
-            35 rue Lucas
-            <br />
-            03200 Vichy
-          </p>
-          <p className="mt-2 font-semibold text-ink">
-            🕒 Nos horaires d&apos;ouverture :
-          </p>
-          <ul className="mt-1 space-y-0.5">
-            <li>• Lundi : 14h00 à 19h00</li>
-            <li>• Mardi au samedi : 9h30 à 19h00</li>
-            <li>• Dimanche : 14h30 à 19h00</li>
-          </ul>
-        </div>
       </div>
 
       <div className="mx-auto max-w-5xl px-4 py-5 sm:px-6">
