@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { ProductCard } from "@/components/ProductCard";
+import { ProductGrid } from "@/components/ProductGrid";
 import type { Artisan, Product } from "@/lib/supabase/types";
 
 export const revalidate = 3600;
@@ -102,10 +102,8 @@ export default async function ArtisanPage({
           Créations de {artisan.name}
         </h2>
         {products && products.length > 0 ? (
-          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+          <div className="mt-3">
+            <ProductGrid products={products} limit={8} />
           </div>
         ) : (
           <p className="mt-3 text-ink-light">
