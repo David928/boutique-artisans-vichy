@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { ArtisanCard } from "@/components/ArtisanCard";
+import { CategoryIcon } from "@/components/CategoryIcon";
 import type { Artisan } from "@/lib/supabase/types";
 
 export function ArtisanBrowser({
@@ -67,20 +68,7 @@ export function ArtisanBrowser({
                   : "bg-cream-light text-ink-light"
               }`}
             >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={1.8}
-                className="h-5 w-5"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="m20.5 12.7-7.8 7.8a1.5 1.5 0 0 1-2.1 0l-6.6-6.6a1.5 1.5 0 0 1-.4-1.1V5.5A1.5 1.5 0 0 1 5.1 4h7.3c.4 0 .8.16 1.1.44l6.9 6.9a1.5 1.5 0 0 1 .1 1.36Z"
-                />
-                <circle cx="8.5" cy="8.5" r="1.2" fill="currentColor" stroke="none" />
-              </svg>
+              <CategoryIcon category={cat} />
               <span className="line-clamp-1 text-center">{cat}</span>
             </button>
           ))}
