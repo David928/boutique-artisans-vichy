@@ -36,7 +36,7 @@ export default async function Home() {
       </div>
 
       <div className="mx-auto max-w-5xl px-4 py-5 sm:px-6">
-        <ArtisanBrowser artisans={artisans ?? []}>
+        <ArtisanBrowser artisans={artisans ?? []} limit={8}>
           {featuredProduct && <FeaturedProduct product={featuredProduct} />}
         </ArtisanBrowser>
       </div>

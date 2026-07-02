@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { ArtisanCard } from "@/components/ArtisanCard";
 import { CategoryIcon } from "@/components/CategoryIcon";
 import type { Artisan } from "@/lib/supabase/types";
@@ -8,9 +9,11 @@ import type { Artisan } from "@/lib/supabase/types";
 export function ArtisanBrowser({
   artisans,
   children,
+  limit,
 }: {
   artisans: Artisan[];
   children?: React.ReactNode;
+  limit?: number;
 }) {
   const [category, setCategory] = useState<string | null>(null);
 
@@ -27,6 +30,8 @@ export function ArtisanBrowser({
       (artisan) => !category || (artisan.categories ?? []).includes(category)
     );
   }, [artisans, category]);
+
+  const visible = limit ? filtered.slice(0, limit) : filtered;
 
   return (
     <div>
@@ -75,14 +80,23 @@ export function ArtisanBrowser({
         </div>
       )}
 
-      {filtered.length > 0 ? (
+      {visible.length > 0 ? (
         <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-          {filtered.map((artisan) => (
+          {visible.map((artisan) => (
             <ArtisanCard key={artisan.id} artisan={artisan} />
           ))}
         </div>
       ) : (
         <p className="mt-4 text-ink-light">Aucun artisan ne correspond.</p>
+      )}
+
+      {limit && filtered.length > limit && (
+        <Link
+          href="/artisans"
+          className="mt-4 block rounded-full border border-ink/15 py-2.5 text-center text-sm font-medium text-ink transition hover:bg-cream-light"
+        >
+          Voir tous les artisans ({filtered.length})
+        </Link>
       )}
     </div>
   );
