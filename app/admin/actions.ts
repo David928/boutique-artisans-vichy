@@ -29,6 +29,38 @@ export async function logout() {
   redirect("/admin/login");
 }
 
+export async function changePassword(formData: FormData) {
+  const artisan = await getCurrentArtisan();
+  if (!artisan) redirect("/admin/login");
+
+  const password = String(formData.get("password") ?? "");
+  const confirm = String(formData.get("confirm") ?? "");
+
+  if (password.length < 6) {
+    redirect(
+      `/admin?pwError=${encodeURIComponent(
+        "Le mot de passe doit contenir au moins 6 caractères."
+      )}`
+    );
+  }
+  if (password !== confirm) {
+    redirect(
+      `/admin?pwError=${encodeURIComponent(
+        "Les deux mots de passe ne correspondent pas."
+      )}`
+    );
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.updateUser({ password });
+
+  if (error) {
+    redirect(`/admin?pwError=${encodeURIComponent(error.message)}`);
+  }
+
+  redirect("/admin?pwSuccess=1");
+}
+
 async function uploadImageIfProvided(
   artisanSlug: string,
   file: File | null

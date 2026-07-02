@@ -2,7 +2,12 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentArtisan } from "@/lib/current-artisan";
 import { createClient } from "@/lib/supabase/server";
-import { updateArtisanProfile, deleteProduct, logout } from "@/app/admin/actions";
+import {
+  updateArtisanProfile,
+  deleteProduct,
+  logout,
+  changePassword,
+} from "@/app/admin/actions";
 import { ARTISAN_CATEGORIES } from "@/lib/categories";
 import { isSuperAdmin } from "@/lib/is-superadmin";
 import type { Product } from "@/lib/supabase/types";
@@ -11,10 +16,15 @@ export const metadata = {
   title: "Tableau de bord — La Boutique des Artisans Vichy",
 };
 
-export default async function AdminDashboardPage() {
+export default async function AdminDashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ pwError?: string; pwSuccess?: string }>;
+}) {
   const artisan = await getCurrentArtisan();
   if (!artisan) redirect("/admin/login");
 
+  const { pwError, pwSuccess } = await searchParams;
   const superAdmin = await isSuperAdmin();
 
   const supabase = await createClient();
@@ -204,6 +214,52 @@ export default async function AdminDashboardPage() {
             Vous n&apos;avez pas encore ajouté de produit.
           </p>
         )}
+      </section>
+
+      <section className="mt-10 rounded-2xl border border-ink/10 bg-cream-light p-6">
+        <h2 className="text-lg font-semibold text-ink">
+          Changer mon mot de passe
+        </h2>
+
+        {pwError && (
+          <p className="mt-3 rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700">
+            {pwError}
+          </p>
+        )}
+        {pwSuccess && (
+          <p className="mt-3 rounded-lg bg-green-50 px-4 py-2 text-sm text-green-700">
+            Mot de passe mis à jour.
+          </p>
+        )}
+
+        <form action={changePassword} className="mt-4 flex flex-col gap-4">
+          <label className="flex flex-col gap-1 text-sm text-ink">
+            Nouveau mot de passe
+            <input
+              type="password"
+              name="password"
+              required
+              minLength={6}
+              className="rounded-lg border border-ink/20 bg-white px-3 py-2 text-ink outline-none focus:border-vichy"
+            />
+          </label>
+          <label className="flex flex-col gap-1 text-sm text-ink">
+            Confirmer le mot de passe
+            <input
+              type="password"
+              name="confirm"
+              required
+              minLength={6}
+              className="rounded-lg border border-ink/20 bg-white px-3 py-2 text-ink outline-none focus:border-vichy"
+            />
+          </label>
+          <button
+            type="submit"
+            className="w-fit rounded-full bg-ink px-5 py-2 text-sm font-medium text-cream-light transition hover:bg-ink-light"
+          >
+            Mettre à jour le mot de passe
+          </button>
+        </form>
       </section>
     </div>
   );
