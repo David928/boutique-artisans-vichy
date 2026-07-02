@@ -68,7 +68,7 @@ export async function updateArtisanProfile(formData: FormData) {
     .from("artisans")
     .update({
       tagline: String(formData.get("tagline") ?? ""),
-      category: String(formData.get("category") ?? "") || null,
+      categories: formData.getAll("categories").map(String),
       story: String(formData.get("story") ?? ""),
       email: String(formData.get("email") ?? "") || null,
       phone: String(formData.get("phone") ?? "") || null,

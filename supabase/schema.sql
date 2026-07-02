@@ -14,7 +14,7 @@ create table if not exists public.artisans (
   tagline text,
   story text,
   photo_url text,
-  category text,
+  categories text[] not null default '{}',
   email text,
   phone text,
   website text,

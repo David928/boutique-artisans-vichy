@@ -17,7 +17,7 @@ export function ArtisanBrowser({
   const categories = useMemo(() => {
     const set = new Set<string>();
     for (const artisan of artisans) {
-      if (artisan.category) set.add(artisan.category);
+      for (const c of artisan.categories ?? []) set.add(c);
     }
     return Array.from(set).sort();
   }, [artisans]);
@@ -25,7 +25,8 @@ export function ArtisanBrowser({
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return artisans.filter((artisan) => {
-      const matchesCategory = !category || artisan.category === category;
+      const matchesCategory =
+        !category || (artisan.categories ?? []).includes(category);
       const matchesQuery =
         !q ||
         artisan.name.toLowerCase().includes(q) ||

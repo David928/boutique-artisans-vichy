@@ -53,21 +53,26 @@ export default async function AdminDashboardPage() {
               className="rounded-lg border border-ink/20 bg-white px-3 py-2 text-ink outline-none focus:border-vichy"
             />
           </label>
-          <label className="flex flex-col gap-1 text-sm text-ink">
-            Catégorie
-            <select
-              name="category"
-              defaultValue={artisan.category ?? ""}
-              className="rounded-lg border border-ink/20 bg-white px-3 py-2 text-ink outline-none focus:border-vichy"
-            >
-              <option value="">Choisir une catégorie</option>
+          <div className="flex flex-col gap-1.5 text-sm text-ink">
+            Catégories (une ou plusieurs)
+            <div className="flex flex-wrap gap-2">
               {ARTISAN_CATEGORIES.map((category) => (
-                <option key={category} value={category}>
+                <label
+                  key={category}
+                  className="flex items-center gap-1.5 rounded-full border border-ink/20 bg-white px-3 py-1.5 text-sm text-ink has-[:checked]:border-vichy has-[:checked]:bg-vichy/10 has-[:checked]:text-vichy"
+                >
+                  <input
+                    type="checkbox"
+                    name="categories"
+                    value={category}
+                    defaultChecked={artisan.categories?.includes(category)}
+                    className="accent-vichy"
+                  />
                   {category}
-                </option>
+                </label>
               ))}
-            </select>
-          </label>
+            </div>
+          </div>
           <label className="flex flex-col gap-1 text-sm text-ink">
             Mon histoire
             <textarea

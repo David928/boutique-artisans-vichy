@@ -3,13 +3,13 @@
 -- L'histoire ci-dessous est un premier jet — à modifier par David depuis
 -- l'espace admin une fois son compte créé (voir README.md).
 
-insert into public.artisans (slug, name, tagline, story, category, email, phone, website)
+insert into public.artisans (slug, name, tagline, story, categories, email, phone, website)
 values (
   'gravetincelle',
   'GravEtincelle',
   'Gravure laser · Impression 3D · Sublimation',
   'GravEtincelle, c''est l''atelier de David : gravure laser, impression 3D et sublimation pour créer des objets personnalisés, fabriqués à la main et sur commande. Chaque pièce est pensée pour raconter une histoire — la vôtre, celle d''un proche, ou celle d''un cadeau qui sort de l''ordinaire.',
-  'Sublimation',
+  array['Gravure laser', 'Impression 3D', 'Sublimation', 'Personnalisation'],
   'contact@gravetincelle.com',
   '06 66 09 37 65',
   'https://gravetincelle.com'
