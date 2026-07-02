@@ -50,9 +50,9 @@ export default async function ArtisanPage({
     .returns<Product[]>();
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
-      <div className="grid gap-8 sm:grid-cols-[minmax(0,260px)_1fr]">
-        <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-ink/5">
+    <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
+      <div className="flex items-center gap-4">
+        <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full bg-ink/5 sm:h-28 sm:w-28">
           {artisan.photo_url ? (
             <Image
               src={artisan.photo_url}
@@ -62,22 +62,19 @@ export default async function ArtisanPage({
               priority
             />
           ) : (
-            <div className="flex h-full items-center justify-center text-ink-light">
+            <div className="flex h-full items-center justify-center px-1 text-center text-[10px] text-ink-light">
               {artisan.name}
             </div>
           )}
         </div>
-        <div>
-          <h1 className="text-3xl font-semibold text-ink">{artisan.name}</h1>
+        <div className="min-w-0">
+          <h1 className="text-xl font-semibold text-ink sm:text-2xl">
+            {artisan.name}
+          </h1>
           {artisan.tagline && (
-            <p className="mt-1 text-vichy">{artisan.tagline}</p>
+            <p className="mt-0.5 text-sm text-vichy">{artisan.tagline}</p>
           )}
-          {artisan.story && (
-            <p className="mt-4 whitespace-pre-line text-ink-light">
-              {artisan.story}
-            </p>
-          )}
-          <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm text-ink-light">
+          <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-xs text-ink-light">
             {artisan.email && <span>{artisan.email}</span>}
             {artisan.phone && <span>{artisan.phone}</span>}
             {artisan.website && (
@@ -94,18 +91,24 @@ export default async function ArtisanPage({
         </div>
       </div>
 
-      <section className="mt-14">
-        <h2 className="text-xl font-semibold text-ink">
+      {artisan.story && (
+        <p className="mt-4 whitespace-pre-line text-sm text-ink-light">
+          {artisan.story}
+        </p>
+      )}
+
+      <section className="mt-8">
+        <h2 className="text-lg font-semibold text-ink">
           Créations de {artisan.name}
         </h2>
         {products && products.length > 0 ? (
-          <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
+          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
             {products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
         ) : (
-          <p className="mt-5 text-ink-light">
+          <p className="mt-3 text-ink-light">
             Les fiches produits arrivent bientôt.
           </p>
         )}
