@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getCurrentArtisan } from "@/lib/current-artisan";
 import { createClient } from "@/lib/supabase/server";
 import { updateArtisanProfile, deleteProduct, logout } from "@/app/admin/actions";
+import { ARTISAN_CATEGORIES } from "@/lib/categories";
 import type { Product } from "@/lib/supabase/types";
 
 export const metadata = {
@@ -51,6 +52,21 @@ export default async function AdminDashboardPage() {
               defaultValue={artisan.tagline ?? ""}
               className="rounded-lg border border-ink/20 bg-white px-3 py-2 text-ink outline-none focus:border-vichy"
             />
+          </label>
+          <label className="flex flex-col gap-1 text-sm text-ink">
+            Catégorie
+            <select
+              name="category"
+              defaultValue={artisan.category ?? ""}
+              className="rounded-lg border border-ink/20 bg-white px-3 py-2 text-ink outline-none focus:border-vichy"
+            >
+              <option value="">Choisir une catégorie</option>
+              {ARTISAN_CATEGORIES.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
           </label>
           <label className="flex flex-col gap-1 text-sm text-ink">
             Mon histoire

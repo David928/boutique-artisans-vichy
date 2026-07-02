@@ -5,6 +5,7 @@ export type Artisan = {
   tagline: string | null;
   story: string | null;
   photo_url: string | null;
+  category: string | null;
   email: string | null;
   phone: string | null;
   website: string | null;

@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import { ArtisanCard } from "@/components/ArtisanCard";
+import { ArtisanBrowser } from "@/components/ArtisanBrowser";
 import type { Artisan } from "@/lib/supabase/types";
 
 export const revalidate = 3600;
@@ -23,17 +23,9 @@ export default async function ArtisansPage() {
         Chaque artisan de la boutique a son propre métier, son histoire et
         ses créations.
       </p>
-      {artisans && artisans.length > 0 ? (
-        <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-          {artisans.map((artisan) => (
-            <ArtisanCard key={artisan.id} artisan={artisan} />
-          ))}
-        </div>
-      ) : (
-        <p className="mt-5 text-ink-light">
-          Les fiches artisans arrivent bientôt.
-        </p>
-      )}
+      <div className="mt-5">
+        <ArtisanBrowser artisans={artisans ?? []} />
+      </div>
     </div>
   );
 }

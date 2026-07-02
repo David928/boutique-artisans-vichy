@@ -1,8 +1,8 @@
-import Link from "next/link";
+import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { getFeaturedProduct } from "@/lib/featured-product";
 import { FeaturedProduct } from "@/components/FeaturedProduct";
-import { ArtisanCard } from "@/components/ArtisanCard";
+import { ArtisanBrowser } from "@/components/ArtisanBrowser";
 import type { Artisan } from "@/lib/supabase/types";
 
 export const revalidate = 3600;
@@ -19,42 +19,27 @@ export default async function Home() {
   ]);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
-      <section>
-        <h1 className="text-2xl font-semibold text-ink sm:text-3xl">
-          La Boutique des Artisans
-        </h1>
-        <p className="mt-1 text-sm text-ink-light">
+    <div>
+      <div className="border-b border-ink/10 bg-cream-light px-4 pb-6 pt-8 text-center sm:pt-10">
+        <Image
+          src="/logo.png"
+          alt="La Boutique des Artisans Vichy"
+          width={320}
+          height={160}
+          className="mx-auto h-24 w-auto sm:h-32"
+          priority
+        />
+        <p className="mx-auto mt-3 max-w-xl text-sm text-ink-light">
           Des créateurs locaux réunis à Vichy, chacun avec son savoir-faire et
           ses créations faites main.
         </p>
-      </section>
+      </div>
 
-      {featuredProduct && (
-        <section className="mt-5">
-          <FeaturedProduct product={featuredProduct} />
-        </section>
-      )}
-
-      <section className="mt-8">
-        <div className="flex items-baseline justify-between">
-          <h2 className="text-lg font-semibold text-ink">Nos artisans</h2>
-          <Link href="/artisans" className="text-sm text-vichy hover:underline">
-            Tous les artisans
-          </Link>
-        </div>
-        {artisans && artisans.length > 0 ? (
-          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-            {artisans.map((artisan) => (
-              <ArtisanCard key={artisan.id} artisan={artisan} />
-            ))}
-          </div>
-        ) : (
-          <p className="mt-5 text-ink-light">
-            Les fiches artisans arrivent bientôt.
-          </p>
-        )}
-      </section>
+      <div className="mx-auto max-w-5xl px-4 py-5 sm:px-6">
+        <ArtisanBrowser artisans={artisans ?? []}>
+          {featuredProduct && <FeaturedProduct product={featuredProduct} />}
+        </ArtisanBrowser>
+      </div>
     </div>
   );
 }
