@@ -15,9 +15,9 @@ export function Header() {
           <Image
             src="/logo.png"
             alt="La Boutique des Artisans Vichy"
-            width={160}
-            height={80}
-            className="h-10 w-auto sm:h-12"
+            width={220}
+            height={100}
+            className="h-12 w-auto sm:h-14"
             priority
           />
         </Link>

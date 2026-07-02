@@ -24,9 +24,9 @@ export default async function Home() {
         <Image
           src="/logo.png"
           alt="La Boutique des Artisans Vichy"
-          width={320}
-          height={160}
-          className="mx-auto h-24 w-auto sm:h-32"
+          width={420}
+          height={190}
+          className="mx-auto h-28 w-auto sm:h-36"
           priority
         />
         <p className="mx-auto mt-3 max-w-xl text-sm text-ink-light">
