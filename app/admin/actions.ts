@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentArtisan } from "@/lib/current-artisan";
+import { slugify } from "@/lib/slugify";
 
 export async function login(formData: FormData) {
   const email = String(formData.get("email") ?? "");
@@ -26,15 +27,6 @@ export async function logout() {
   const supabase = await createClient();
   await supabase.auth.signOut();
   redirect("/admin/login");
-}
-
-function slugify(value: string): string {
-  return value
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
 }
 
 async function uploadImageIfProvided(

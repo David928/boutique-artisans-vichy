@@ -38,6 +38,14 @@ Dans le dashboard Supabase → **SQL Editor → New query** :
 
 ## 4. Créer un compte de connexion pour un artisan
 
+**Méthode recommandée** : une fois connecté sur `/admin` avec le compte
+superadmin (voir section suivante), utilisez la page
+**`/admin/nouveau-artisan`** — elle crée la fiche artisan et son compte de
+connexion en un seul formulaire, avec un mot de passe généré
+automatiquement.
+
+**Méthode manuelle** (si besoin, ou avant d'avoir configuré le superadmin) :
+
 1. Dashboard Supabase → **Authentication → Users → Add user**. Créez un
    utilisateur avec un email et un mot de passe (à communiquer à l'artisan).
 2. Récupérez l'**UUID** de cet utilisateur (colonne `UID` dans la liste).
@@ -51,9 +59,22 @@ Dans le dashboard Supabase → **SQL Editor → New query** :
    where a.slug = 'gravetincelle';
    ```
 
-Répétez les étapes 1 à 3 pour chaque nouvel artisan (créez d'abord sa ligne
-dans `artisans` via SQL Editor ou depuis un futur outil d'admin, puis son
-compte, puis le lien dans `profiles`).
+## 4bis. Configurer le compte superadmin (accès à /admin/nouveau-artisan)
+
+Dans `.env.local` (et dans les variables d'environnement Vercel), ajoutez :
+
+```
+SUPERADMIN_EMAIL=votre-email-de-connexion-admin
+SUPABASE_SERVICE_ROLE_KEY=votre-cle-service_role
+```
+
+- `SUPERADMIN_EMAIL` : l'email du compte artisan que vous utilisez pour vous
+  connecter — ce compte verra apparaître le bouton "+ Ajouter un artisan"
+  sur `/admin`.
+- `SUPABASE_SERVICE_ROLE_KEY` : Project Settings → API → clé **service_role**
+  (ou `sb_secret_...`). ⚠️ Cette clé donne un accès complet à la base — ne
+  jamais la préfixer par `NEXT_PUBLIC_`, ne jamais la commiter, ne la
+  renseigner que côté serveur (`.env.local` / variables Vercel).
 
 ## 5. Lancer le site en local
 

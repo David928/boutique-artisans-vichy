@@ -4,6 +4,7 @@ import { getCurrentArtisan } from "@/lib/current-artisan";
 import { createClient } from "@/lib/supabase/server";
 import { updateArtisanProfile, deleteProduct, logout } from "@/app/admin/actions";
 import { ARTISAN_CATEGORIES } from "@/lib/categories";
+import { isSuperAdmin } from "@/lib/is-superadmin";
 import type { Product } from "@/lib/supabase/types";
 
 export const metadata = {
@@ -13,6 +14,8 @@ export const metadata = {
 export default async function AdminDashboardPage() {
   const artisan = await getCurrentArtisan();
   if (!artisan) redirect("/admin/login");
+
+  const superAdmin = await isSuperAdmin();
 
   const supabase = await createClient();
   const { data: products } = await supabase
@@ -37,6 +40,16 @@ export default async function AdminDashboardPage() {
           </button>
         </form>
       </div>
+
+      {superAdmin && (
+        <Link
+          href="/admin/nouveau-artisan"
+          className="mt-4 flex items-center justify-between rounded-2xl border border-vichy/30 bg-vichy/10 px-4 py-3 text-sm font-medium text-vichy"
+        >
+          + Ajouter un artisan (superadmin)
+          <span aria-hidden>→</span>
+        </Link>
+      )}
 
       <section className="mt-8 rounded-2xl border border-ink/10 bg-cream-light p-6">
         <h2 className="text-lg font-semibold text-ink">Ma fiche artisan</h2>
