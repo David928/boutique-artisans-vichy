@@ -7,6 +7,13 @@ export default function InfosPage() {
     <div className="mx-auto max-w-xl px-4 py-6 sm:px-6 sm:py-10">
       <h1 className="text-2xl font-semibold text-ink">Infos pratiques</h1>
 
+      <p className="mt-3 text-sm text-ink-light">
+        Cette application vous fait découvrir les artisans de la boutique,
+        leurs nouveautés et leurs plus beaux produits. Mais rien ne remplace
+        une visite : n&apos;hésitez pas à passer nous voir en boutique pour
+        explorer l&apos;univers complet de chacun !
+      </p>
+
       <div className="mt-5 rounded-xl border border-ink/10 bg-cream-light px-4 py-4 text-sm text-ink-light">
         <p className="font-semibold text-ink">Retrouvez-nous :</p>
         <p className="mt-1">

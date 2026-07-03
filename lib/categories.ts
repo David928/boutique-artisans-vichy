@@ -9,5 +9,4 @@ export const ARTISAN_CATEGORIES = [
   "Papeterie",
   "Gravure laser",
   "Impression 3D",
-  "Autre",
 ] as const;

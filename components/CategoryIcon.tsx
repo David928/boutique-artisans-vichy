@@ -70,13 +70,6 @@ const PATHS: Record<string, React.ReactNode> = {
       <path d="M12 12v9M12 12 20 7.5M12 12 4 7.5" />
     </>
   ),
-  Autre: (
-    <>
-      <circle cx="6" cy="12" r="1.3" fill="currentColor" stroke="none" />
-      <circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none" />
-      <circle cx="18" cy="12" r="1.3" fill="currentColor" stroke="none" />
-    </>
-  ),
 };
 
 const FALLBACK = (
