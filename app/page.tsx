@@ -1,21 +1,16 @@
 import Image from "next/image";
-import { createClient } from "@/lib/supabase/server";
+import Link from "next/link";
 import { getFeaturedProduct } from "@/lib/featured-product";
+import { getFeaturedArtisan } from "@/lib/featured-artisan";
 import { FeaturedProduct } from "@/components/FeaturedProduct";
-import { ArtisanBrowser } from "@/components/ArtisanBrowser";
-import type { Artisan } from "@/lib/supabase/types";
+import { FeaturedArtisan } from "@/components/FeaturedArtisan";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const supabase = await createClient();
-  const [{ data: artisans }, featuredProduct] = await Promise.all([
-    supabase
-      .from("artisans")
-      .select("*")
-      .order("name", { ascending: true })
-      .returns<Artisan[]>(),
+  const [featuredProduct, featuredArtisan] = await Promise.all([
     getFeaturedProduct(),
+    getFeaturedArtisan(),
   ]);
 
   return (
@@ -35,10 +30,16 @@ export default async function Home() {
         </p>
       </div>
 
-      <div className="mx-auto max-w-5xl px-4 py-5 sm:px-6">
-        <ArtisanBrowser artisans={artisans ?? []} limit={8}>
-          {featuredProduct && <FeaturedProduct product={featuredProduct} />}
-        </ArtisanBrowser>
+      <div className="mx-auto flex max-w-5xl flex-col gap-3 px-4 py-5 sm:px-6">
+        {featuredProduct && <FeaturedProduct product={featuredProduct} />}
+        {featuredArtisan && <FeaturedArtisan artisan={featuredArtisan} />}
+
+        <Link
+          href="/artisans"
+          className="mt-2 block rounded-full bg-ink py-3 text-center text-sm font-medium text-cream-light transition hover:bg-ink-light"
+        >
+          Voir tous les artisans
+        </Link>
       </div>
     </div>
   );
