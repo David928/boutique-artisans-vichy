@@ -35,6 +35,7 @@ create table if not exists public.products (
   description text,
   price numeric(10, 2),
   image_url text,
+  images text[] not null default '{}',
   is_available boolean not null default true,
   created_at timestamptz not null default now()
 );

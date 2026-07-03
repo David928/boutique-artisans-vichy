@@ -79,6 +79,21 @@ async function uploadImageIfProvided(
   return data.publicUrl;
 }
 
+async function uploadImagesIfProvided(
+  artisanSlug: string,
+  files: File[]
+): Promise<string[]> {
+  const valid = files.filter((f) => f && f.size > 0);
+  if (valid.length === 0) return [];
+
+  const urls: string[] = [];
+  for (const file of valid) {
+    const url = await uploadImageIfProvided(artisanSlug, file);
+    if (url) urls.push(url);
+  }
+  return urls;
+}
+
 export async function updateArtisanProfile(formData: FormData) {
   const artisan = await getCurrentArtisan();
   if (!artisan) redirect("/admin/login");
@@ -115,8 +130,8 @@ export async function createProduct(formData: FormData) {
   const supabase = await createClient();
   const name = String(formData.get("name") ?? "");
   const slug = `${slugify(name)}-${Date.now().toString(36)}`;
-  const imageFile = formData.get("image") as File | null;
-  const image_url = await uploadImageIfProvided(artisan.slug, imageFile);
+  const imageFiles = formData.getAll("images") as File[];
+  const images = await uploadImagesIfProvided(artisan.slug, imageFiles);
 
   const { error } = await supabase.from("products").insert({
     artisan_id: artisan.id,
@@ -125,7 +140,8 @@ export async function createProduct(formData: FormData) {
     description: String(formData.get("description") ?? "") || null,
     price: formData.get("price") ? Number(formData.get("price")) : null,
     is_available: formData.get("is_available") === "on",
-    image_url,
+    image_url: images[0] ?? null,
+    images,
   });
 
   if (error) throw new Error(error.message);
@@ -141,8 +157,8 @@ export async function updateProduct(productId: string, formData: FormData) {
   if (!artisan) redirect("/admin/login");
 
   const supabase = await createClient();
-  const imageFile = formData.get("image") as File | null;
-  const image_url = await uploadImageIfProvided(artisan.slug, imageFile);
+  const imageFiles = formData.getAll("images") as File[];
+  const images = await uploadImagesIfProvided(artisan.slug, imageFiles);
 
   const { error } = await supabase
     .from("products")
@@ -151,7 +167,7 @@ export async function updateProduct(productId: string, formData: FormData) {
       description: String(formData.get("description") ?? "") || null,
       price: formData.get("price") ? Number(formData.get("price")) : null,
       is_available: formData.get("is_available") === "on",
-      ...(image_url ? { image_url } : {}),
+      ...(images.length > 0 ? { image_url: images[0], images } : {}),
     })
     .eq("id", productId)
     .eq("artisan_id", artisan.id);

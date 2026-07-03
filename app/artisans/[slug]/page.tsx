@@ -15,14 +15,19 @@ export async function generateMetadata({
   const supabase = await createClient();
   const { data: artisan } = await supabase
     .from("artisans")
-    .select("name, tagline")
+    .select("name, tagline, photo_url")
     .eq("slug", slug)
     .maybeSingle();
 
   if (!artisan) return {};
+  const title = `${artisan.name} — La Boutique des Artisans Vichy`;
+  const description = artisan.tagline ?? undefined;
+  const images = artisan.photo_url ? [artisan.photo_url] : undefined;
   return {
-    title: `${artisan.name} — La Boutique des Artisans Vichy`,
-    description: artisan.tagline ?? undefined,
+    title,
+    description,
+    openGraph: { title, description, images },
+    twitter: { card: "summary_large_image", title, description, images },
   };
 }
 

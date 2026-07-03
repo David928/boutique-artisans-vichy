@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import "./globals.css";
@@ -14,10 +15,37 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const title = "La Boutique des Artisans — Vichy";
+const description =
+  "Découvrez les artisans de la Boutique des Artisans à Vichy, leur savoir-faire, leur histoire et leurs créations.";
+
 export const metadata: Metadata = {
-  title: "La Boutique des Artisans — Vichy",
-  description:
-    "Découvrez les artisans de la Boutique des Artisans à Vichy, leur savoir-faire, leur histoire et leurs créations.",
+  metadataBase: new URL("https://boutique-artisans-vichy.vercel.app"),
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    siteName: "La Boutique des Artisans — Vichy",
+    locale: "fr_FR",
+    type: "website",
+    images: ["/logo.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: ["/logo.png"],
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Boutique des Artisans",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#f0e9d8",
 };
 
 export default function RootLayout({
@@ -34,6 +62,7 @@ export default function RootLayout({
         <Header />
         <main className="flex-1 pb-20">{children}</main>
         <BottomNav />
+        <Analytics />
       </body>
     </html>
   );

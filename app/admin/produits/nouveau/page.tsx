@@ -43,11 +43,12 @@ export default async function NewProductPage() {
           />
         </label>
         <label className="flex flex-col gap-1 text-sm text-ink">
-          Photo
+          Photos (la première sera utilisée comme photo principale)
           <input
             type="file"
-            name="image"
+            name="images"
             accept="image/*"
+            multiple
             className="rounded-lg border border-ink/20 bg-cream-light px-3 py-2 text-ink outline-none"
           />
         </label>

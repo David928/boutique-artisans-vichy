@@ -67,13 +67,20 @@ export default async function EditProductPage({
           />
         </label>
         <label className="flex flex-col gap-1 text-sm text-ink">
-          Nouvelle photo (laisser vide pour garder l&apos;actuelle)
+          Nouvelles photos (laisser vide pour garder les actuelles —{" "}
+          {product.images?.length ?? 0} photo
+          {(product.images?.length ?? 0) > 1 ? "s" : ""} en ligne)
           <input
             type="file"
-            name="image"
+            name="images"
             accept="image/*"
+            multiple
             className="rounded-lg border border-ink/20 bg-cream-light px-3 py-2 text-ink outline-none"
           />
+          <span className="text-xs text-ink-light">
+            Sélectionner plusieurs fichiers remplace toutes les photos
+            actuelles, la première devient la photo principale.
+          </span>
         </label>
         <label className="flex items-center gap-2 text-sm text-ink">
           <input

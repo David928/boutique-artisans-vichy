@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { FavoriteButton } from "@/components/FavoriteButton";
 import type { Product } from "@/lib/supabase/types";
 
 export function ProductCard({ product }: { product: Product }) {
@@ -9,6 +10,7 @@ export function ProductCard({ product }: { product: Product }) {
       className="group block overflow-hidden rounded-lg border border-ink/10 bg-cream-light shadow-sm transition hover:shadow-md"
     >
       <div className="relative aspect-square w-full bg-ink/5">
+        <FavoriteButton productId={product.id} />
         {product.image_url ? (
           <Image
             src={product.image_url}

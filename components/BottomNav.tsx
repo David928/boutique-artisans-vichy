@@ -45,6 +45,25 @@ const tabs = [
     ),
   },
   {
+    href: "/favoris",
+    label: "Favoris",
+    icon: (active: boolean) => (
+      <svg
+        viewBox="0 0 24 24"
+        fill={active ? "currentColor" : "none"}
+        stroke="currentColor"
+        strokeWidth={1.8}
+        className="h-6 w-6"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M12 20.5s-7.5-4.6-9.8-9.2C.7 8 2 4.8 5.2 4.1c2-.4 3.9.5 4.8 2.3.4.8 1.6.8 2 0 .9-1.8 2.8-2.7 4.8-2.3 3.2.7 4.5 3.9 3 7.2-2.3 4.6-9.8 9.2-9.8 9.2Z"
+        />
+      </svg>
+    ),
+  },
+  {
     href: "/infos",
     label: "Infos",
     icon: () => (

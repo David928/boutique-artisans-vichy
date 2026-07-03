@@ -20,6 +20,7 @@ export type Product = {
   description: string | null;
   price: number | null;
   image_url: string | null;
+  images: string[];
   is_available: boolean;
   created_at: string;
 };

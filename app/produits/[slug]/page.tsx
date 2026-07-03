@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { ProductGallery } from "@/components/ProductGallery";
 import type { ProductWithArtisan } from "@/lib/supabase/types";
 
 export const revalidate = 3600;
@@ -15,14 +15,19 @@ export async function generateMetadata({
   const supabase = await createClient();
   const { data: product } = await supabase
     .from("products")
-    .select("name, description")
+    .select("name, description, image_url")
     .eq("slug", slug)
     .maybeSingle();
 
   if (!product) return {};
+  const title = `${product.name} — La Boutique des Artisans Vichy`;
+  const description = product.description ?? undefined;
+  const images = product.image_url ? [product.image_url] : undefined;
   return {
-    title: `${product.name} — La Boutique des Artisans Vichy`,
-    description: product.description ?? undefined,
+    title,
+    description,
+    openGraph: { title, description, images },
+    twitter: { card: "summary_large_image", title, description, images },
   };
 }
 
@@ -45,20 +50,13 @@ export default async function ProductPage({
   return (
     <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-10">
       <div className="grid gap-6 sm:grid-cols-2">
-        <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-ink/5">
-          {product.image_url ? (
-            <Image
-              src={product.image_url}
-              alt={product.name}
-              fill
-              className="object-cover"
-              priority
-            />
-          ) : (
-            <div className="flex h-full items-center justify-center px-4 text-center text-ink-light">
-              {product.name}
-            </div>
-          )}
+        <div>
+          <ProductGallery
+            images={
+              product.images?.length ? product.images : product.image_url ? [product.image_url] : []
+            }
+            name={product.name}
+          />
         </div>
         <div>
           {!product.is_available && (
