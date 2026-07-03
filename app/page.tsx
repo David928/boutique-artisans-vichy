@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { getFeaturedProduct } from "@/lib/featured-product";
 import { getFeaturedArtisan } from "@/lib/featured-artisan";
 import { getLatestProduct } from "@/lib/latest-product";
@@ -68,13 +67,6 @@ export default async function Home() {
             {featuredArtisan && <FeaturedArtisan artisan={featuredArtisan} />}
           </div>
         </section>
-
-        <Link
-          href="/artisans"
-          className="mt-6 block rounded-full bg-ink py-3 text-center text-sm font-medium text-cream-light transition hover:bg-ink-light"
-        >
-          Voir tous les artisans
-        </Link>
       </div>
     </div>
   );
