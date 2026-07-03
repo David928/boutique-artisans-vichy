@@ -5,7 +5,7 @@ import { FeaturedProduct } from "@/components/FeaturedProduct";
 import { ArtisanBrowser } from "@/components/ArtisanBrowser";
 import type { Artisan } from "@/lib/supabase/types";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const supabase = await createClient();

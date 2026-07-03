@@ -1,37 +1,23 @@
 import { createClient } from "@/lib/supabase/server";
 import type { ProductWithArtisan } from "@/lib/supabase/types";
 
-/** Hash simple et déterministe (FNV-1a) pour transformer une chaîne en entier positif. */
-function hashString(value: string): number {
-  let hash = 0x811c9dc5;
-  for (let i = 0; i < value.length; i++) {
-    hash ^= value.charCodeAt(i);
-    hash = Math.imul(hash, 0x01000193);
-  }
-  return hash >>> 0;
-}
-
 /**
- * Choisit un produit "du jour" de façon déterministe à partir de la date du
- * jour : même produit pour tout le monde sur une journée donnée, et rotation
- * automatique le lendemain sans action manuelle. `dateOverride` permet de
- * tester la rotation avec une autre date.
+ * Choisit un produit mis en avant au hasard parmi les produits disponibles.
+ * Appelé à chaque visite de l'accueil (page rendue dynamiquement, voir
+ * `export const dynamic = "force-dynamic"` dans app/page.tsx) : chaque
+ * personne qui ouvre l'application peut donc voir un produit différent.
  */
-export async function getFeaturedProduct(
-  dateOverride?: string
-): Promise<ProductWithArtisan | null> {
+export async function getFeaturedProduct(): Promise<ProductWithArtisan | null> {
   const supabase = await createClient();
 
   const { data: products } = await supabase
     .from("products")
     .select("*, artisan:artisans(slug, name)")
-    .eq("is_available", true)
-    .order("id", { ascending: true });
+    .eq("is_available", true);
 
   if (!products || products.length === 0) return null;
 
-  const today = dateOverride ?? new Date().toISOString().slice(0, 10);
-  const index = hashString(today) % products.length;
+  const index = Math.floor(Math.random() * products.length);
 
   return products[index] as ProductWithArtisan;
 }
