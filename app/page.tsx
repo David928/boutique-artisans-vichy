@@ -2,14 +2,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { getFeaturedProduct } from "@/lib/featured-product";
 import { getFeaturedArtisan } from "@/lib/featured-artisan";
+import { getLatestProduct } from "@/lib/latest-product";
 import { FeaturedProduct } from "@/components/FeaturedProduct";
 import { FeaturedArtisan } from "@/components/FeaturedArtisan";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
+  const latestProduct = await getLatestProduct();
   const [featuredProduct, featuredArtisan] = await Promise.all([
-    getFeaturedProduct(),
+    getFeaturedProduct(latestProduct?.id),
     getFeaturedArtisan(),
   ]);
 
@@ -35,22 +37,41 @@ export default async function Home() {
       </div>
 
       <div className="mx-auto max-w-5xl px-4 py-5 sm:px-6">
-        <h2 className="text-lg font-semibold text-ink">
-          ✨ Coup de cœur du moment
-        </h2>
-        <p className="mt-0.5 text-xs text-ink-light">
-          Un nouveau produit et un nouvel artisan à chaque ouverture de
-          l&apos;application.
-        </p>
+        {latestProduct && (
+          <section>
+            <h2 className="text-lg font-semibold text-ink">
+              🆕 Dernier objet en boutique
+            </h2>
+            <p className="mt-0.5 text-xs text-ink-light">
+              Le tout dernier ajouté par nos artisans.
+            </p>
+            <div className="mt-3">
+              <FeaturedProduct
+                product={latestProduct}
+                label="Nouveau en boutique"
+              />
+            </div>
+          </section>
+        )}
 
-        <div className="mt-3 flex flex-col gap-3">
-          {featuredProduct && <FeaturedProduct product={featuredProduct} />}
-          {featuredArtisan && <FeaturedArtisan artisan={featuredArtisan} />}
-        </div>
+        <section className="mt-6">
+          <h2 className="text-lg font-semibold text-ink">
+            ✨ Coup de cœur du moment
+          </h2>
+          <p className="mt-0.5 text-xs text-ink-light">
+            Un nouveau produit et un nouvel artisan à chaque ouverture de
+            l&apos;application.
+          </p>
+
+          <div className="mt-3 flex flex-col gap-3">
+            {featuredProduct && <FeaturedProduct product={featuredProduct} />}
+            {featuredArtisan && <FeaturedArtisan artisan={featuredArtisan} />}
+          </div>
+        </section>
 
         <Link
           href="/artisans"
-          className="mt-4 block rounded-full bg-ink py-3 text-center text-sm font-medium text-cream-light transition hover:bg-ink-light"
+          className="mt-6 block rounded-full bg-ink py-3 text-center text-sm font-medium text-cream-light transition hover:bg-ink-light"
         >
           Voir tous les artisans
         </Link>

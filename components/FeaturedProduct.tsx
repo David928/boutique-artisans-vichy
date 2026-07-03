@@ -2,7 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ProductWithArtisan } from "@/lib/supabase/types";
 
-export function FeaturedProduct({ product }: { product: ProductWithArtisan }) {
+export function FeaturedProduct({
+  product,
+  label = "Produit coup de cœur",
+}: {
+  product: ProductWithArtisan;
+  label?: string;
+}) {
   return (
     <Link
       href={`/produits/${product.slug}`}
@@ -25,7 +31,7 @@ export function FeaturedProduct({ product }: { product: ProductWithArtisan }) {
       </div>
       <div className="min-w-0 flex-1">
         <span className="text-[10px] font-semibold uppercase tracking-wide text-vichy">
-          Produit coup de cœur
+          {label}
         </span>
         <h2 className="truncate text-base font-semibold text-ink">
           {product.name}
