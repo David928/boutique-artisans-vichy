@@ -25,18 +25,32 @@ export default async function Home() {
           priority
         />
         <p className="mx-auto mt-3 max-w-xl text-sm text-ink-light">
-          Des créateurs locaux réunis à Vichy, chacun avec son savoir-faire et
-          ses créations faites main.
+          La Boutique des Artisans réunit des créateurs locaux à Vichy,
+          chacun avec son savoir-faire et ses créations faites main.
+        </p>
+        <p className="mx-auto mt-2 max-w-xl text-sm text-ink-light">
+          Explorez ici leurs univers, leurs nouveautés et leurs plus belles
+          pièces — avant de venir les rencontrer en boutique.
         </p>
       </div>
 
-      <div className="mx-auto flex max-w-5xl flex-col gap-3 px-4 py-5 sm:px-6">
-        {featuredProduct && <FeaturedProduct product={featuredProduct} />}
-        {featuredArtisan && <FeaturedArtisan artisan={featuredArtisan} />}
+      <div className="mx-auto max-w-5xl px-4 py-5 sm:px-6">
+        <h2 className="text-lg font-semibold text-ink">
+          ✨ Coup de cœur du moment
+        </h2>
+        <p className="mt-0.5 text-xs text-ink-light">
+          Un nouveau produit et un nouvel artisan à chaque ouverture de
+          l&apos;application.
+        </p>
+
+        <div className="mt-3 flex flex-col gap-3">
+          {featuredProduct && <FeaturedProduct product={featuredProduct} />}
+          {featuredArtisan && <FeaturedArtisan artisan={featuredArtisan} />}
+        </div>
 
         <Link
           href="/artisans"
-          className="mt-2 block rounded-full bg-ink py-3 text-center text-sm font-medium text-cream-light transition hover:bg-ink-light"
+          className="mt-4 block rounded-full bg-ink py-3 text-center text-sm font-medium text-cream-light transition hover:bg-ink-light"
         >
           Voir tous les artisans
         </Link>

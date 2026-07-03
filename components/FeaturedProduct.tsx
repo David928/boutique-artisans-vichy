@@ -25,7 +25,7 @@ export function FeaturedProduct({ product }: { product: ProductWithArtisan }) {
       </div>
       <div className="min-w-0 flex-1">
         <span className="text-[10px] font-semibold uppercase tracking-wide text-vichy">
-          Produit du jour
+          Produit coup de cœur
         </span>
         <h2 className="truncate text-base font-semibold text-ink">
           {product.name}
