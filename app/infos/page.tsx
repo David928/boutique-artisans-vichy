@@ -9,9 +9,12 @@ export default function InfosPage() {
 
       <p className="mt-3 text-sm text-ink-light">
         Cette application vous fait découvrir les artisans de la boutique,
-        leurs nouveautés et leurs plus beaux produits. Mais rien ne remplace
-        une visite : n&apos;hésitez pas à passer nous voir en boutique pour
-        explorer l&apos;univers complet de chacun !
+        leurs nouveautés et leurs plus beaux produits.
+      </p>
+
+      <p className="mt-4 text-sm text-ink-light">
+        Mais rien ne remplace une visite : n&apos;hésitez pas à passer nous
+        voir en boutique pour explorer l&apos;univers complet de chacun !
       </p>
 
       <div className="mt-5 rounded-xl border border-ink/10 bg-cream-light px-4 py-4 text-sm text-ink-light">
@@ -23,7 +26,15 @@ export default function InfosPage() {
           <br />
           03200 Vichy
         </p>
-        <p className="mt-3 font-semibold text-ink">
+        <a
+          href="https://www.google.com/maps/search/?api=1&query=Centre+Commercial+Les+4+Chemins+35+rue+Lucas+03200+Vichy"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-2 inline-block rounded-full bg-vichy px-4 py-1.5 text-xs font-medium text-white transition hover:bg-vichy-light"
+        >
+          Voir l&apos;itinéraire →
+        </a>
+        <p className="mt-4 font-semibold text-ink">
           🕒 Nos horaires d&apos;ouverture :
         </p>
         <ul className="mt-1 space-y-0.5">
