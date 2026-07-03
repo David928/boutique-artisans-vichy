@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { ProductGallery } from "@/components/ProductGallery";
+import { FavoriteButton } from "@/components/FavoriteButton";
 import type { ProductWithArtisan } from "@/lib/supabase/types";
 
 export const revalidate = 3600;
@@ -84,12 +85,15 @@ export default async function ProductPage({
               {product.description}
             </p>
           )}
-          <Link
-            href={`/artisans/${product.artisan.slug}`}
-            className="mt-6 inline-block rounded-full border border-ink/20 px-5 py-2 text-sm font-medium text-ink transition hover:bg-ink/5"
-          >
-            Voir tous les produits de {product.artisan.name}
-          </Link>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <FavoriteButton productId={product.id} variant="labeled" />
+            <Link
+              href={`/artisans/${product.artisan.slug}`}
+              className="inline-block rounded-full border border-ink/20 px-5 py-2 text-sm font-medium text-ink transition hover:bg-ink/5"
+            >
+              Voir tous les produits de {product.artisan.name}
+            </Link>
+          </div>
         </div>
       </div>
     </div>
