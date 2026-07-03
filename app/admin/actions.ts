@@ -61,47 +61,13 @@ export async function changePassword(formData: FormData) {
   redirect("/admin?pwSuccess=1");
 }
 
-async function uploadImageIfProvided(
-  artisanSlug: string,
-  file: File | null
-): Promise<string | null> {
-  if (!file || file.size === 0) return null;
-
-  const supabase = await createClient();
-  const path = `${artisanSlug}/${Date.now()}-${slugify(file.name)}`;
-
-  const { error } = await supabase.storage
-    .from("images")
-    .upload(path, file, { upsert: true });
-  if (error) throw new Error(error.message);
-
-  const { data } = supabase.storage.from("images").getPublicUrl(path);
-  return data.publicUrl;
-}
-
-async function uploadImagesIfProvided(
-  artisanSlug: string,
-  files: File[]
-): Promise<string[]> {
-  const valid = files.filter((f) => f && f.size > 0);
-  if (valid.length === 0) return [];
-
-  const urls: string[] = [];
-  for (const file of valid) {
-    const url = await uploadImageIfProvided(artisanSlug, file);
-    if (url) urls.push(url);
-  }
-  return urls;
-}
-
 export async function updateArtisanProfile(formData: FormData) {
   const artisan = await getCurrentArtisan();
   if (!artisan) redirect("/admin/login");
 
   const supabase = await createClient();
 
-  const photoFile = formData.get("photo") as File | null;
-  const photo_url = await uploadImageIfProvided(artisan.slug, photoFile);
+  const photo_url = String(formData.get("photo_url") ?? "").trim() || null;
 
   const { error } = await supabase
     .from("artisans")
@@ -130,8 +96,7 @@ export async function createProduct(formData: FormData) {
   const supabase = await createClient();
   const name = String(formData.get("name") ?? "");
   const slug = `${slugify(name)}-${Date.now().toString(36)}`;
-  const imageFiles = formData.getAll("images") as File[];
-  const images = await uploadImagesIfProvided(artisan.slug, imageFiles);
+  const images = formData.getAll("image_urls").map(String).filter(Boolean);
 
   const { error } = await supabase.from("products").insert({
     artisan_id: artisan.id,
@@ -149,7 +114,6 @@ export async function createProduct(formData: FormData) {
   revalidatePath("/admin");
   revalidatePath(`/artisans/${artisan.slug}`);
   revalidatePath("/");
-  redirect("/admin");
 }
 
 export async function updateProduct(productId: string, formData: FormData) {
@@ -157,8 +121,7 @@ export async function updateProduct(productId: string, formData: FormData) {
   if (!artisan) redirect("/admin/login");
 
   const supabase = await createClient();
-  const imageFiles = formData.getAll("images") as File[];
-  const images = await uploadImagesIfProvided(artisan.slug, imageFiles);
+  const images = formData.getAll("image_urls").map(String).filter(Boolean);
 
   const { error } = await supabase
     .from("products")
@@ -177,7 +140,6 @@ export async function updateProduct(productId: string, formData: FormData) {
   revalidatePath("/admin");
   revalidatePath(`/artisans/${artisan.slug}`);
   revalidatePath("/");
-  redirect("/admin");
 }
 
 export async function deleteProduct(productId: string) {

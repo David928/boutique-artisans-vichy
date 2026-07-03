@@ -2,14 +2,9 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentArtisan } from "@/lib/current-artisan";
 import { createClient } from "@/lib/supabase/server";
-import {
-  updateArtisanProfile,
-  deleteProduct,
-  logout,
-} from "@/app/admin/actions";
-import { ARTISAN_CATEGORIES } from "@/lib/categories";
+import { deleteProduct, logout } from "@/app/admin/actions";
 import { isSuperAdmin } from "@/lib/is-superadmin";
-import { ChangePasswordModal } from "@/components/ChangePasswordModal";
+import { ProfileForm } from "@/components/ProfileForm";
 import type { Product } from "@/lib/supabase/types";
 
 export const metadata = {
@@ -74,96 +69,7 @@ export default async function AdminDashboardPage({
 
       <section className="mt-8 rounded-2xl border border-ink/10 bg-cream-light p-6">
         <h2 className="text-lg font-semibold text-ink">Ma fiche artisan</h2>
-        <form
-          action={updateArtisanProfile}
-          className="mt-4 flex flex-col gap-4"
-        >
-          <label className="flex flex-col gap-1 text-sm text-ink">
-            Métier / accroche
-            <input
-              type="text"
-              name="tagline"
-              defaultValue={artisan.tagline ?? ""}
-              className="rounded-lg border border-ink/20 bg-white px-3 py-2 text-ink outline-none focus:border-vichy"
-            />
-          </label>
-          <div className="flex flex-col gap-1.5 text-sm text-ink">
-            Catégories (une ou plusieurs)
-            <div className="flex flex-wrap gap-2">
-              {ARTISAN_CATEGORIES.map((category) => (
-                <label
-                  key={category}
-                  className="flex items-center gap-1.5 rounded-full border border-ink/20 bg-white px-3 py-1.5 text-sm text-ink has-[:checked]:border-vichy has-[:checked]:bg-vichy/10 has-[:checked]:text-vichy"
-                >
-                  <input
-                    type="checkbox"
-                    name="categories"
-                    value={category}
-                    defaultChecked={artisan.categories?.includes(category)}
-                    className="accent-vichy"
-                  />
-                  {category}
-                </label>
-              ))}
-            </div>
-          </div>
-          <label className="flex flex-col gap-1 text-sm text-ink">
-            Mon histoire
-            <textarea
-              name="story"
-              rows={6}
-              defaultValue={artisan.story ?? ""}
-              className="rounded-lg border border-ink/20 bg-white px-3 py-2 text-ink outline-none focus:border-vichy"
-            />
-          </label>
-          <label className="flex flex-col gap-1 text-sm text-ink">
-            Photo (portrait ou atelier)
-            <input
-              type="file"
-              name="photo"
-              accept="image/*"
-              className="rounded-lg border border-ink/20 bg-white px-3 py-2 text-ink outline-none"
-            />
-          </label>
-          <div className="grid gap-4 sm:grid-cols-3">
-            <label className="flex flex-col gap-1 text-sm text-ink">
-              Email
-              <input
-                type="email"
-                name="email"
-                defaultValue={artisan.email ?? ""}
-                className="rounded-lg border border-ink/20 bg-white px-3 py-2 text-ink outline-none focus:border-vichy"
-              />
-            </label>
-            <label className="flex flex-col gap-1 text-sm text-ink">
-              Téléphone
-              <input
-                type="text"
-                name="phone"
-                defaultValue={artisan.phone ?? ""}
-                className="rounded-lg border border-ink/20 bg-white px-3 py-2 text-ink outline-none focus:border-vichy"
-              />
-            </label>
-            <label className="flex flex-col gap-1 text-sm text-ink">
-              Site web
-              <input
-                type="text"
-                name="website"
-                defaultValue={artisan.website ?? ""}
-                className="rounded-lg border border-ink/20 bg-white px-3 py-2 text-ink outline-none focus:border-vichy"
-              />
-            </label>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <button
-              type="submit"
-              className="w-fit rounded-full bg-ink px-5 py-2 text-sm font-medium text-cream-light transition hover:bg-ink-light"
-            >
-              Enregistrer ma fiche
-            </button>
-            <ChangePasswordModal />
-          </div>
-        </form>
+        <ProfileForm artisan={artisan} />
       </section>
 
       <section className="mt-10">
