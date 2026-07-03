@@ -4,6 +4,7 @@ import { randomBytes } from "crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isSuperAdmin } from "@/lib/is-superadmin";
 import { slugify } from "@/lib/slugify";
+import { sendArtisanWelcomeEmail } from "@/lib/email";
 
 export type CreateArtisanState = {
   error?: string;
@@ -12,6 +13,8 @@ export type CreateArtisanState = {
     slug: string;
     email: string;
     password: string;
+    emailSent: boolean;
+    emailError?: string;
   };
 };
 
@@ -86,7 +89,23 @@ export async function createArtisanWithAccount(
       throw new Error(profileError.message);
     }
 
-    return { success: { name, slug, email, password } };
+    const emailResult = await sendArtisanWelcomeEmail({
+      to: email,
+      artisanName: name,
+      password,
+      slug,
+    });
+
+    return {
+      success: {
+        name,
+        slug,
+        email,
+        password,
+        emailSent: emailResult.sent,
+        emailError: emailResult.error,
+      },
+    };
   } catch (err) {
     await admin.auth.admin.deleteUser(userData.user.id).catch(() => {});
     return {

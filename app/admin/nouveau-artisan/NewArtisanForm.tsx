@@ -39,11 +39,20 @@ export function NewArtisanForm() {
         <h2 className="text-lg font-semibold text-ink">
           {state.success.name} a été créé !
         </h2>
-        <p className="mt-1 text-sm text-ink-light">
-          Communiquez ces identifiants à l&apos;artisan pour qu&apos;il se
-          connecte sur <span className="font-medium">/admin</span>. Le mot de
-          passe ne sera plus jamais affiché.
-        </p>
+        {state.success.emailSent ? (
+          <p className="mt-1 text-sm text-ink-light">
+            Un email avec les identifiants a été envoyé à{" "}
+            <span className="font-medium">{state.success.email}</span>. Ils
+            sont aussi rappelés ci-dessous au cas où.
+          </p>
+        ) : (
+          <p className="mt-1 text-sm text-ink-light">
+            L&apos;email automatique n&apos;a pas pu être envoyé
+            {state.success.emailError ? ` (${state.success.emailError})` : ""}
+            . Communiquez ces identifiants à l&apos;artisan vous-même — le
+            mot de passe ne sera plus jamais affiché.
+          </p>
+        )}
         <dl className="mt-4 space-y-2 text-sm">
           <div className="flex gap-2">
             <dt className="w-24 shrink-0 font-medium text-ink">Email</dt>
