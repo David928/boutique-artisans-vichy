@@ -60,31 +60,37 @@ export async function createArtisanWithAccount(
     };
   }
 
-  const { data: artisan, error: artisanError } = await admin
-    .from("artisans")
-    .insert({ slug, name, tagline, categories })
-    .select("id")
-    .single();
+  // Tout échec à partir d'ici (y compris une exception imprévue) doit
+  // supprimer le compte auth déjà créé pour éviter un compte orphelin.
+  try {
+    const { data: artisan, error: artisanError } = await admin
+      .from("artisans")
+      .insert({ slug, name, tagline, categories })
+      .select("id")
+      .single();
 
-  if (artisanError || !artisan) {
-    await admin.auth.admin.deleteUser(userData.user.id);
-    return {
-      error:
+    if (artisanError || !artisan) {
+      throw new Error(
         artisanError?.message ??
-        "Impossible de créer la fiche artisan (slug déjà utilisé ?).",
+          "Impossible de créer la fiche artisan (slug déjà utilisé ?)."
+      );
+    }
+
+    const { error: profileError } = await admin.from("profiles").insert({
+      id: userData.user.id,
+      artisan_id: artisan.id,
+    });
+
+    if (profileError) {
+      await admin.from("artisans").delete().eq("id", artisan.id);
+      throw new Error(profileError.message);
+    }
+
+    return { success: { name, slug, email, password } };
+  } catch (err) {
+    await admin.auth.admin.deleteUser(userData.user.id).catch(() => {});
+    return {
+      error: err instanceof Error ? err.message : "Une erreur est survenue.",
     };
   }
-
-  const { error: profileError } = await admin.from("profiles").insert({
-    id: userData.user.id,
-    artisan_id: artisan.id,
-  });
-
-  if (profileError) {
-    await admin.auth.admin.deleteUser(userData.user.id);
-    await admin.from("artisans").delete().eq("id", artisan.id);
-    return { error: profileError.message };
-  }
-
-  return { success: { name, slug, email, password } };
 }
