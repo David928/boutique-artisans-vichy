@@ -58,13 +58,22 @@ export default async function AdminDashboardPage({
       )}
 
       {superAdmin && (
-        <Link
-          href="/admin/nouveau-artisan"
-          className="mt-4 flex items-center justify-between rounded-2xl border border-vichy/30 bg-vichy/10 px-4 py-3 text-sm font-medium text-vichy"
-        >
-          + Ajouter un artisan (superadmin)
-          <span aria-hidden>→</span>
-        </Link>
+        <div className="mt-4 flex flex-col gap-2">
+          <Link
+            href="/admin/nouveau-artisan"
+            className="flex items-center justify-between rounded-2xl border border-vichy/30 bg-vichy/10 px-4 py-3 text-sm font-medium text-vichy"
+          >
+            + Ajouter un artisan (superadmin)
+            <span aria-hidden>→</span>
+          </Link>
+          <Link
+            href="/admin/artisans"
+            className="flex items-center justify-between rounded-2xl border border-vichy/30 bg-vichy/10 px-4 py-3 text-sm font-medium text-vichy"
+          >
+            Gérer les fiches artisans (superadmin)
+            <span aria-hidden>→</span>
+          </Link>
+        </div>
       )}
 
       <section className="mt-8 rounded-2xl border border-ink/10 bg-cream-light p-6">

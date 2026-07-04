@@ -2,6 +2,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { ProductGrid } from "@/components/ProductGrid";
+import { ShareButton } from "@/components/ShareButton";
 import type { Artisan, Product } from "@/lib/supabase/types";
 
 export const revalidate = 3600;
@@ -101,6 +102,13 @@ export default async function ArtisanPage({
           {artisan.story}
         </p>
       )}
+
+      <div className="mt-4">
+        <ShareButton
+          title={artisan.name}
+          text={`${artisan.name} — La Boutique des Artisans Vichy`}
+        />
+      </div>
 
       <section className="mt-8">
         <h2 className="text-lg font-semibold text-ink">
