@@ -3,7 +3,12 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { ProductGrid } from "@/components/ProductGrid";
 import { ShareButton } from "@/components/ShareButton";
-import type { Artisan, Product } from "@/lib/supabase/types";
+import { AnnouncementCard } from "@/components/AnnouncementCard";
+import type {
+  Artisan,
+  Product,
+  AnnouncementWithArtisan,
+} from "@/lib/supabase/types";
 
 export const revalidate = 3600;
 
@@ -48,12 +53,22 @@ export default async function ArtisanPage({
 
   if (!artisan) notFound();
 
-  const { data: products } = await supabase
-    .from("products")
-    .select("*")
-    .eq("artisan_id", artisan.id)
-    .order("created_at", { ascending: false })
-    .returns<Product[]>();
+  const nowIso = new Date().toISOString();
+  const [{ data: products }, { data: announcements }] = await Promise.all([
+    supabase
+      .from("products")
+      .select("*")
+      .eq("artisan_id", artisan.id)
+      .order("created_at", { ascending: false })
+      .returns<Product[]>(),
+    supabase
+      .from("announcements")
+      .select("*, artisan:artisans(slug, name)")
+      .eq("artisan_id", artisan.id)
+      .or(`expires_at.is.null,expires_at.gt.${nowIso}`)
+      .order("created_at", { ascending: false })
+      .returns<AnnouncementWithArtisan[]>(),
+  ]);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
@@ -109,6 +124,19 @@ export default async function ArtisanPage({
           text={`${artisan.name} — La Boutique des Artisans Vichy`}
         />
       </div>
+
+      {announcements && announcements.length > 0 && (
+        <section className="mt-8">
+          <h2 className="text-lg font-semibold text-ink">
+            Annonces de {artisan.name}
+          </h2>
+          <div className="mt-3 flex flex-col gap-3">
+            {announcements.map((a) => (
+              <AnnouncementCard key={a.id} announcement={a} showArtisan={false} />
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="mt-8">
         <h2 className="text-lg font-semibold text-ink">
