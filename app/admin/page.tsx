@@ -89,6 +89,13 @@ export default async function AdminDashboardPage({
             Annonces de la boutique (superadmin)
             <span aria-hidden>→</span>
           </Link>
+          <Link
+            href="/admin/produits-boutique"
+            className="flex items-center justify-between rounded-2xl border border-vichy/30 bg-vichy/10 px-4 py-3 text-sm font-medium text-vichy"
+          >
+            Tous les produits (superadmin)
+            <span aria-hidden>→</span>
+          </Link>
         </div>
       )}
 

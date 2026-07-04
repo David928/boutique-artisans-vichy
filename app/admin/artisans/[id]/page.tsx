@@ -2,6 +2,7 @@ import { notFound, redirect } from "next/navigation";
 import { isSuperAdmin } from "@/lib/is-superadmin";
 import { createClient } from "@/lib/supabase/server";
 import { AdminArtisanForm } from "@/components/AdminArtisanForm";
+import { DeleteArtisanButton } from "@/components/DeleteArtisanButton";
 import type { Artisan } from "@/lib/supabase/types";
 
 export const metadata = {
@@ -31,6 +32,10 @@ export default async function AdminEditArtisanPage({
         Modifier « {artisan.name} »
       </h1>
       <AdminArtisanForm artisan={artisan} />
+
+      <div className="mt-8 border-t border-ink/10 pt-6">
+        <DeleteArtisanButton artisanId={artisan.id} artisanName={artisan.name} />
+      </div>
     </div>
   );
 }
