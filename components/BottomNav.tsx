@@ -64,19 +64,25 @@ const tabs = [
     ),
   },
   {
-    href: "/infos",
-    label: "Infos",
-    icon: () => (
+    href: "/nouveautes",
+    label: "Nouveautés",
+    icon: (active: boolean) => (
       <svg
         viewBox="0 0 24 24"
-        fill="none"
+        fill={active ? "currentColor" : "none"}
         stroke="currentColor"
         strokeWidth={1.8}
         className="h-6 w-6"
       >
-        <circle cx="12" cy="12" r="8.5" />
-        <path strokeLinecap="round" d="M12 11v5.5" />
-        <circle cx="12" cy="8" r="0.9" fill="currentColor" stroke="none" />
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M3 10v4a1 1 0 0 0 1 1h2l4.5 3.5a.8.8 0 0 0 1.3-.6V6.1a.8.8 0 0 0-1.3-.6L6 9H4a1 1 0 0 0-1 1Z"
+        />
+        <path
+          strokeLinecap="round"
+          d="M16.5 9c.8.7 1.3 1.7 1.3 3s-.5 2.3-1.3 3M19 6.5C20.3 7.7 21 9.3 21 12s-.7 4.3-2 5.5"
+        />
       </svg>
     ),
   },

@@ -28,3 +28,17 @@ export type Product = {
 export type ProductWithArtisan = Product & {
   artisan: Pick<Artisan, "slug" | "name">;
 };
+
+export type Announcement = {
+  id: string;
+  artisan_id: string | null;
+  title: string;
+  description: string | null;
+  image_url: string | null;
+  expires_at: string | null;
+  created_at: string;
+};
+
+export type AnnouncementWithArtisan = Announcement & {
+  artisan: Pick<Artisan, "slug" | "name"> | null;
+};

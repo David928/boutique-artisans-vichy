@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { getFeaturedProduct } from "@/lib/featured-product";
 import { getFeaturedArtisan } from "@/lib/featured-artisan";
 import { getLatestProduct } from "@/lib/latest-product";
@@ -33,6 +34,12 @@ export default async function Home() {
           Explorez ici leurs univers, leurs nouveautés et leurs plus belles
           pièces — avant de venir les rencontrer en boutique.
         </p>
+        <Link
+          href="/infos"
+          className="mt-3 inline-block text-xs font-medium text-vichy hover:underline"
+        >
+          ℹ️ Infos pratiques (adresse, horaires...)
+        </Link>
       </div>
 
       <div className="mx-auto max-w-5xl px-4 py-5 sm:px-6">
@@ -67,6 +74,13 @@ export default async function Home() {
             {featuredArtisan && <FeaturedArtisan artisan={featuredArtisan} />}
           </div>
         </section>
+
+        <Link
+          href="/nouveautes"
+          className="mt-6 block rounded-full bg-ink py-3 text-center text-sm font-medium text-cream-light transition hover:bg-ink-light"
+        >
+          📣 Voir toutes les nouveautés et promos
+        </Link>
       </div>
     </div>
   );

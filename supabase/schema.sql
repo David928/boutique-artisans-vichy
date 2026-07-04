@@ -42,6 +42,20 @@ create table if not exists public.products (
 
 create index if not exists products_artisan_id_idx on public.products (artisan_id);
 
+-- announcements : annonces/promos publiées par un artisan (artisan_id renseigné)
+-- ou par la boutique en général (artisan_id = null, créées par le superadmin).
+create table if not exists public.announcements (
+  id uuid primary key default gen_random_uuid(),
+  artisan_id uuid references public.artisans (id) on delete cascade,
+  title text not null,
+  description text,
+  image_url text,
+  expires_at timestamptz,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists announcements_artisan_id_idx on public.announcements (artisan_id);
+
 -- ---------------------------------------------------------------------------
 -- Row Level Security
 -- ---------------------------------------------------------------------------
@@ -49,6 +63,7 @@ create index if not exists products_artisan_id_idx on public.products (artisan_i
 alter table public.artisans enable row level security;
 alter table public.profiles enable row level security;
 alter table public.products enable row level security;
+alter table public.announcements enable row level security;
 
 -- artisans : lecture publique, écriture réservée au propriétaire (via profiles)
 create policy "artisans_public_read" on public.artisans
@@ -78,6 +93,27 @@ create policy "products_owner_update" on public.products
   );
 
 create policy "products_owner_delete" on public.products
+  for delete using (
+    artisan_id in (select artisan_id from public.profiles where id = auth.uid())
+  );
+
+-- announcements : lecture publique ; écriture réservée au propriétaire de
+-- l'artisan lié (les annonces "boutique", artisan_id null, sont gérées par
+-- le superadmin via la clé service_role, qui contourne ces policies).
+create policy "announcements_public_read" on public.announcements
+  for select using (true);
+
+create policy "announcements_owner_insert" on public.announcements
+  for insert with check (
+    artisan_id in (select artisan_id from public.profiles where id = auth.uid())
+  );
+
+create policy "announcements_owner_update" on public.announcements
+  for update using (
+    artisan_id in (select artisan_id from public.profiles where id = auth.uid())
+  );
+
+create policy "announcements_owner_delete" on public.announcements
   for delete using (
     artisan_id in (select artisan_id from public.profiles where id = auth.uid())
   );

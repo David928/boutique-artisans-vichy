@@ -3,9 +3,10 @@ import { redirect } from "next/navigation";
 import { getCurrentArtisan } from "@/lib/current-artisan";
 import { createClient } from "@/lib/supabase/server";
 import { deleteProduct, logout } from "@/app/admin/actions";
+import { deleteAnnouncement } from "@/app/admin/annonces/actions";
 import { isSuperAdmin } from "@/lib/is-superadmin";
 import { ProfileForm } from "@/components/ProfileForm";
-import type { Product } from "@/lib/supabase/types";
+import type { Product, Announcement } from "@/lib/supabase/types";
 
 export const metadata = {
   title: "Tableau de bord — La Boutique des Artisans Vichy",
@@ -23,12 +24,20 @@ export default async function AdminDashboardPage({
   const superAdmin = await isSuperAdmin();
 
   const supabase = await createClient();
-  const { data: products } = await supabase
-    .from("products")
-    .select("*")
-    .eq("artisan_id", artisan.id)
-    .order("created_at", { ascending: false })
-    .returns<Product[]>();
+  const [{ data: products }, { data: announcements }] = await Promise.all([
+    supabase
+      .from("products")
+      .select("*")
+      .eq("artisan_id", artisan.id)
+      .order("created_at", { ascending: false })
+      .returns<Product[]>(),
+    supabase
+      .from("announcements")
+      .select("*")
+      .eq("artisan_id", artisan.id)
+      .order("created_at", { ascending: false })
+      .returns<Announcement[]>(),
+  ]);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-14">
@@ -71,6 +80,13 @@ export default async function AdminDashboardPage({
             className="flex items-center justify-between rounded-2xl border border-vichy/30 bg-vichy/10 px-4 py-3 text-sm font-medium text-vichy"
           >
             Gérer les fiches artisans (superadmin)
+            <span aria-hidden>→</span>
+          </Link>
+          <Link
+            href="/admin/annonces-boutique"
+            className="flex items-center justify-between rounded-2xl border border-vichy/30 bg-vichy/10 px-4 py-3 text-sm font-medium text-vichy"
+          >
+            Annonces de la boutique (superadmin)
             <span aria-hidden>→</span>
           </Link>
         </div>
@@ -141,6 +157,66 @@ export default async function AdminDashboardPage({
         ) : (
           <p className="mt-5 text-ink-light">
             Vous n&apos;avez pas encore ajouté de produit.
+          </p>
+        )}
+      </section>
+
+      <section className="mt-10">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-ink">Mes annonces</h2>
+          <Link
+            href="/admin/annonces/nouvelle"
+            className="rounded-full bg-vichy px-4 py-2 text-sm font-medium text-white transition hover:bg-vichy-light"
+          >
+            + Ajouter une annonce
+          </Link>
+        </div>
+
+        {announcements && announcements.length > 0 ? (
+          <ul className="mt-5 flex flex-col gap-3">
+            {announcements.map((announcement) => (
+              <li
+                key={announcement.id}
+                className="flex items-center justify-between rounded-xl border border-ink/10 bg-cream-light px-4 py-3"
+              >
+                <div>
+                  <p className="font-medium text-ink">{announcement.title}</p>
+                  {announcement.expires_at && (
+                    <p className="text-sm text-ink-light">
+                      Jusqu&apos;au{" "}
+                      {new Date(announcement.expires_at).toLocaleDateString(
+                        "fr-FR"
+                      )}
+                    </p>
+                  )}
+                </div>
+                <div className="flex items-center gap-3 text-sm">
+                  <Link
+                    href={`/admin/annonces/${announcement.id}`}
+                    className="text-vichy hover:underline"
+                  >
+                    Modifier
+                  </Link>
+                  <form
+                    action={async () => {
+                      "use server";
+                      await deleteAnnouncement(announcement.id);
+                    }}
+                  >
+                    <button
+                      type="submit"
+                      className="text-red-700 hover:underline"
+                    >
+                      Supprimer
+                    </button>
+                  </form>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-5 text-ink-light">
+            Vous n&apos;avez pas encore publié d&apos;annonce.
           </p>
         )}
       </section>
