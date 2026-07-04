@@ -4,13 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentArtisan } from "@/lib/current-artisan";
-
-function parseExpiresAt(value: FormDataEntryValue | null): string | null {
-  const str = String(value ?? "").trim();
-  if (!str) return null;
-  const date = new Date(str);
-  return isNaN(date.getTime()) ? null : date.toISOString();
-}
+import { computeExpiresAt } from "@/lib/announcement-expiry";
 
 export async function createAnnouncement(formData: FormData) {
   const artisan = await getCurrentArtisan();
@@ -24,7 +18,7 @@ export async function createAnnouncement(formData: FormData) {
     title: String(formData.get("title") ?? ""),
     description: String(formData.get("description") ?? "") || null,
     image_url,
-    expires_at: parseExpiresAt(formData.get("expires_at")),
+    expires_at: computeExpiresAt(formData.get("expires_at")),
   });
 
   if (error) throw new Error(error.message);
@@ -48,7 +42,7 @@ export async function updateAnnouncement(
     .update({
       title: String(formData.get("title") ?? ""),
       description: String(formData.get("description") ?? "") || null,
-      expires_at: parseExpiresAt(formData.get("expires_at")),
+      expires_at: computeExpiresAt(formData.get("expires_at")),
       ...(image_url ? { image_url } : {}),
     })
     .eq("id", announcementId)

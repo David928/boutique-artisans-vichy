@@ -4,6 +4,10 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { createAnnouncement, updateAnnouncement } from "@/app/admin/annonces/actions";
 import { uploadImageClient } from "@/lib/supabase/upload";
+import {
+  MAX_ANNOUNCEMENT_DAYS,
+  maxExpiryDateInputValue,
+} from "@/lib/announcement-expiry";
 import type { Announcement } from "@/lib/supabase/types";
 
 export function AnnouncementForm({
@@ -92,16 +96,18 @@ export function AnnouncementForm({
         />
       </label>
       <label className="flex flex-col gap-1 text-sm text-ink">
-        Date de fin (optionnelle)
+        Date de fin (optionnelle, {MAX_ANNOUNCEMENT_DAYS} jours maximum)
         <input
           type="date"
           name="expires_at"
           defaultValue={expiresDefault}
+          max={maxExpiryDateInputValue()}
           className="rounded-lg border border-ink/20 bg-cream-light px-3 py-2 text-ink outline-none focus:border-vichy"
         />
         <span className="text-xs text-ink-light">
-          Passé cette date, l&apos;annonce disparaît automatiquement de
-          l&apos;application.
+          Passé cette date, l&apos;annonce disparaît automatiquement. Sans
+          date choisie, elle disparaît d&apos;elle-même après{" "}
+          {MAX_ANNOUNCEMENT_DAYS} jours.
         </span>
       </label>
       <button
