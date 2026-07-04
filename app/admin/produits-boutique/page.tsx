@@ -35,10 +35,10 @@ export default async function AdminAllProductsPage() {
           {products.map((product) => (
             <li
               key={product.id}
-              className="flex items-center justify-between rounded-xl border border-ink/10 bg-cream-light px-4 py-3"
+              className="flex items-center justify-between gap-3 rounded-xl border border-ink/10 bg-cream-light px-4 py-3"
             >
-              <div>
-                <p className="font-medium text-ink">
+              <div className="min-w-0">
+                <p className="truncate font-medium text-ink">
                   {product.name}
                   {!product.is_available && (
                     <span className="ml-2 text-xs text-ink-light">
@@ -46,12 +46,12 @@ export default async function AdminAllProductsPage() {
                     </span>
                   )}
                 </p>
-                <p className="text-sm text-ink-light">
+                <p className="truncate text-sm text-ink-light">
                   {product.artisan.name}
                   {product.price != null && <> · {product.price.toFixed(2)} €</>}
                 </p>
               </div>
-              <div className="flex items-center gap-3 text-sm">
+              <div className="flex shrink-0 items-center gap-3 text-sm">
                 <Link
                   href={`/produits/${product.slug}`}
                   className="text-vichy hover:underline"

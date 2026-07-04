@@ -20,11 +20,11 @@ export default async function AdminArtisansPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6 sm:py-14">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-ink">Gérer les artisans</h1>
+      <div className="flex items-center justify-between gap-3">
+        <h1 className="min-w-0 truncate text-2xl font-semibold text-ink">Gérer les artisans</h1>
         <Link
           href="/admin/nouveau-artisan"
-          className="rounded-full bg-vichy px-4 py-2 text-sm font-medium text-white transition hover:bg-vichy-light"
+          className="shrink-0 rounded-full bg-vichy px-4 py-2 text-sm font-medium text-white transition hover:bg-vichy-light"
         >
           + Ajouter
         </Link>
@@ -35,17 +35,17 @@ export default async function AdminArtisansPage() {
           {artisans.map((artisan) => (
             <li
               key={artisan.id}
-              className="flex items-center justify-between rounded-xl border border-ink/10 bg-cream-light px-4 py-3"
+              className="flex items-center justify-between gap-3 rounded-xl border border-ink/10 bg-cream-light px-4 py-3"
             >
-              <div>
-                <p className="font-medium text-ink">{artisan.name}</p>
+              <div className="min-w-0">
+                <p className="truncate font-medium text-ink">{artisan.name}</p>
                 {artisan.tagline && (
-                  <p className="text-sm text-ink-light">{artisan.tagline}</p>
+                  <p className="truncate text-sm text-ink-light">{artisan.tagline}</p>
                 )}
               </div>
               <Link
                 href={`/admin/artisans/${artisan.id}`}
-                className="text-sm text-vichy hover:underline"
+                className="shrink-0 text-sm text-vichy hover:underline"
               >
                 Modifier
               </Link>

@@ -45,10 +45,10 @@ export default async function AdminBoutiqueAnnouncementsPage() {
             {announcements.map((announcement) => (
               <li
                 key={announcement.id}
-                className="flex items-center justify-between rounded-xl border border-ink/10 bg-cream-light px-4 py-3"
+                className="flex items-center justify-between gap-3 rounded-xl border border-ink/10 bg-cream-light px-4 py-3"
               >
-                <div>
-                  <p className="font-medium text-ink">{announcement.title}</p>
+                <div className="min-w-0">
+                  <p className="truncate font-medium text-ink">{announcement.title}</p>
                   {announcement.expires_at && (
                     <p className="text-sm text-ink-light">
                       Jusqu&apos;au{" "}
@@ -63,6 +63,7 @@ export default async function AdminBoutiqueAnnouncementsPage() {
                     "use server";
                     await deleteBoutiqueAnnouncement(announcement.id);
                   }}
+                  className="shrink-0"
                 >
                   <button
                     type="submit"

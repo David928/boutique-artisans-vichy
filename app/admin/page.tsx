@@ -41,11 +41,11 @@ export default async function AdminDashboardPage({
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-14">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-ink">
+      <div className="flex items-center justify-between gap-3">
+        <h1 className="min-w-0 truncate text-2xl font-semibold text-ink">
           Bonjour, {artisan.name}
         </h1>
-        <form action={logout}>
+        <form action={logout} className="shrink-0">
           <button
             type="submit"
             className="text-sm text-ink-light hover:text-vichy"
@@ -70,31 +70,31 @@ export default async function AdminDashboardPage({
         <div className="mt-4 flex flex-col gap-2">
           <Link
             href="/admin/nouveau-artisan"
-            className="flex items-center justify-between rounded-2xl border border-vichy/30 bg-vichy/10 px-4 py-3 text-sm font-medium text-vichy"
+            className="flex items-center justify-between gap-3 rounded-2xl border border-vichy/30 bg-vichy/10 px-4 py-3 text-sm font-medium text-vichy"
           >
-            + Ajouter un artisan (superadmin)
-            <span aria-hidden>→</span>
+            <span className="min-w-0">+ Ajouter un artisan (superadmin)</span>
+            <span aria-hidden className="shrink-0">→</span>
           </Link>
           <Link
             href="/admin/artisans"
-            className="flex items-center justify-between rounded-2xl border border-vichy/30 bg-vichy/10 px-4 py-3 text-sm font-medium text-vichy"
+            className="flex items-center justify-between gap-3 rounded-2xl border border-vichy/30 bg-vichy/10 px-4 py-3 text-sm font-medium text-vichy"
           >
-            Gérer les fiches artisans (superadmin)
-            <span aria-hidden>→</span>
+            <span className="min-w-0">Gérer les fiches artisans (superadmin)</span>
+            <span aria-hidden className="shrink-0">→</span>
           </Link>
           <Link
             href="/admin/annonces-boutique"
-            className="flex items-center justify-between rounded-2xl border border-vichy/30 bg-vichy/10 px-4 py-3 text-sm font-medium text-vichy"
+            className="flex items-center justify-between gap-3 rounded-2xl border border-vichy/30 bg-vichy/10 px-4 py-3 text-sm font-medium text-vichy"
           >
-            Annonces de la boutique (superadmin)
-            <span aria-hidden>→</span>
+            <span className="min-w-0">Annonces de la boutique (superadmin)</span>
+            <span aria-hidden className="shrink-0">→</span>
           </Link>
           <Link
             href="/admin/produits-boutique"
-            className="flex items-center justify-between rounded-2xl border border-vichy/30 bg-vichy/10 px-4 py-3 text-sm font-medium text-vichy"
+            className="flex items-center justify-between gap-3 rounded-2xl border border-vichy/30 bg-vichy/10 px-4 py-3 text-sm font-medium text-vichy"
           >
-            Tous les produits (superadmin)
-            <span aria-hidden>→</span>
+            <span className="min-w-0">Tous les produits (superadmin)</span>
+            <span aria-hidden className="shrink-0">→</span>
           </Link>
         </div>
       )}
@@ -105,11 +105,11 @@ export default async function AdminDashboardPage({
       </section>
 
       <section className="mt-10">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-ink">Mes produits</h2>
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="min-w-0 truncate text-lg font-semibold text-ink">Mes produits</h2>
           <Link
             href="/admin/produits/nouveau"
-            className="rounded-full bg-vichy px-4 py-2 text-sm font-medium text-white transition hover:bg-vichy-light"
+            className="shrink-0 rounded-full bg-vichy px-4 py-2 text-sm font-medium text-white transition hover:bg-vichy-light"
           >
             + Ajouter un produit
           </Link>
@@ -120,10 +120,10 @@ export default async function AdminDashboardPage({
             {products.map((product) => (
               <li
                 key={product.id}
-                className="flex items-center justify-between rounded-xl border border-ink/10 bg-cream-light px-4 py-3"
+                className="flex items-center justify-between gap-3 rounded-xl border border-ink/10 bg-cream-light px-4 py-3"
               >
-                <div>
-                  <p className="font-medium text-ink">
+                <div className="min-w-0">
+                  <p className="truncate font-medium text-ink">
                     {product.name}
                     {!product.is_available && (
                       <span className="ml-2 text-xs text-ink-light">
@@ -137,7 +137,7 @@ export default async function AdminDashboardPage({
                     </p>
                   )}
                 </div>
-                <div className="flex items-center gap-3 text-sm">
+                <div className="flex shrink-0 items-center gap-3 text-sm">
                   <Link
                     href={`/admin/produits/${product.id}`}
                     className="text-vichy hover:underline"
@@ -169,11 +169,11 @@ export default async function AdminDashboardPage({
       </section>
 
       <section className="mt-10">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-ink">Mes annonces</h2>
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="min-w-0 truncate text-lg font-semibold text-ink">Mes annonces</h2>
           <Link
             href="/admin/annonces/nouvelle"
-            className="rounded-full bg-vichy px-4 py-2 text-sm font-medium text-white transition hover:bg-vichy-light"
+            className="shrink-0 rounded-full bg-vichy px-4 py-2 text-sm font-medium text-white transition hover:bg-vichy-light"
           >
             + Ajouter une annonce
           </Link>
@@ -184,10 +184,10 @@ export default async function AdminDashboardPage({
             {announcements.map((announcement) => (
               <li
                 key={announcement.id}
-                className="flex items-center justify-between rounded-xl border border-ink/10 bg-cream-light px-4 py-3"
+                className="flex items-center justify-between gap-3 rounded-xl border border-ink/10 bg-cream-light px-4 py-3"
               >
-                <div>
-                  <p className="font-medium text-ink">{announcement.title}</p>
+                <div className="min-w-0">
+                  <p className="truncate font-medium text-ink">{announcement.title}</p>
                   {announcement.expires_at && (
                     <p className="text-sm text-ink-light">
                       Jusqu&apos;au{" "}
@@ -197,7 +197,7 @@ export default async function AdminDashboardPage({
                     </p>
                   )}
                 </div>
-                <div className="flex items-center gap-3 text-sm">
+                <div className="flex shrink-0 items-center gap-3 text-sm">
                   <Link
                     href={`/admin/annonces/${announcement.id}`}
                     className="text-vichy hover:underline"
