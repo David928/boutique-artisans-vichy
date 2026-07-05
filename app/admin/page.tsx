@@ -39,6 +39,11 @@ export default async function AdminDashboardPage({
       .returns<Announcement[]>(),
   ]);
 
+  const now = new Date();
+  const hasActiveAnnouncement = (announcements ?? []).some(
+    (a) => !a.expires_at || new Date(a.expires_at) > now
+  );
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-14">
       <div className="flex items-center justify-between gap-3">
@@ -106,6 +111,68 @@ export default async function AdminDashboardPage({
 
       <section className="mt-10">
         <div className="flex items-center justify-between gap-3">
+          <h2 className="min-w-0 truncate text-lg font-semibold text-ink">Mes annonces</h2>
+          {!hasActiveAnnouncement && (
+            <Link
+              href="/admin/annonces/nouvelle"
+              className="shrink-0 rounded-full bg-vichy px-4 py-2 text-sm font-medium text-white transition hover:bg-vichy-light"
+            >
+              + Ajouter une annonce
+            </Link>
+          )}
+        </div>
+
+        {announcements && announcements.length > 0 ? (
+          <ul className="mt-5 flex flex-col gap-3">
+            {announcements.map((announcement) => (
+              <li
+                key={announcement.id}
+                className="flex items-center justify-between gap-3 rounded-xl border border-ink/10 bg-cream-light px-4 py-3"
+              >
+                <div className="min-w-0">
+                  <p className="truncate font-medium text-ink">{announcement.title}</p>
+                  {announcement.expires_at && (
+                    <p className="text-sm text-ink-light">
+                      Jusqu&apos;au{" "}
+                      {new Date(announcement.expires_at).toLocaleDateString(
+                        "fr-FR"
+                      )}
+                    </p>
+                  )}
+                </div>
+                <div className="flex shrink-0 items-center gap-3 text-sm">
+                  <Link
+                    href={`/admin/annonces/${announcement.id}`}
+                    className="text-vichy hover:underline"
+                  >
+                    Modifier
+                  </Link>
+                  <form
+                    action={async () => {
+                      "use server";
+                      await deleteAnnouncement(announcement.id);
+                    }}
+                  >
+                    <button
+                      type="submit"
+                      className="text-red-700 hover:underline"
+                    >
+                      Supprimer
+                    </button>
+                  </form>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-5 text-ink-light">
+            Vous n&apos;avez pas encore publié d&apos;annonce.
+          </p>
+        )}
+      </section>
+
+      <section className="mt-10">
+        <div className="flex items-center justify-between gap-3">
           <h2 className="min-w-0 truncate text-lg font-semibold text-ink">Mes produits</h2>
           <Link
             href="/admin/produits/nouveau"
@@ -164,66 +231,6 @@ export default async function AdminDashboardPage({
         ) : (
           <p className="mt-5 text-ink-light">
             Vous n&apos;avez pas encore ajouté de produit.
-          </p>
-        )}
-      </section>
-
-      <section className="mt-10">
-        <div className="flex items-center justify-between gap-3">
-          <h2 className="min-w-0 truncate text-lg font-semibold text-ink">Mes annonces</h2>
-          <Link
-            href="/admin/annonces/nouvelle"
-            className="shrink-0 rounded-full bg-vichy px-4 py-2 text-sm font-medium text-white transition hover:bg-vichy-light"
-          >
-            + Ajouter une annonce
-          </Link>
-        </div>
-
-        {announcements && announcements.length > 0 ? (
-          <ul className="mt-5 flex flex-col gap-3">
-            {announcements.map((announcement) => (
-              <li
-                key={announcement.id}
-                className="flex items-center justify-between gap-3 rounded-xl border border-ink/10 bg-cream-light px-4 py-3"
-              >
-                <div className="min-w-0">
-                  <p className="truncate font-medium text-ink">{announcement.title}</p>
-                  {announcement.expires_at && (
-                    <p className="text-sm text-ink-light">
-                      Jusqu&apos;au{" "}
-                      {new Date(announcement.expires_at).toLocaleDateString(
-                        "fr-FR"
-                      )}
-                    </p>
-                  )}
-                </div>
-                <div className="flex shrink-0 items-center gap-3 text-sm">
-                  <Link
-                    href={`/admin/annonces/${announcement.id}`}
-                    className="text-vichy hover:underline"
-                  >
-                    Modifier
-                  </Link>
-                  <form
-                    action={async () => {
-                      "use server";
-                      await deleteAnnouncement(announcement.id);
-                    }}
-                  >
-                    <button
-                      type="submit"
-                      className="text-red-700 hover:underline"
-                    >
-                      Supprimer
-                    </button>
-                  </form>
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="mt-5 text-ink-light">
-            Vous n&apos;avez pas encore publié d&apos;annonce.
           </p>
         )}
       </section>

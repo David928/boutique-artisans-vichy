@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentArtisan } from "@/lib/current-artisan";
-import { computeExpiresAt } from "@/lib/announcement-expiry";
+import { computeExpiresAt, getActiveAnnouncement } from "@/lib/announcement-expiry";
 import { sendPushToAll } from "@/lib/push";
 
 export async function createAnnouncement(formData: FormData) {
@@ -12,6 +12,14 @@ export async function createAnnouncement(formData: FormData) {
   if (!artisan) redirect("/admin/login");
 
   const supabase = await createClient();
+
+  const existing = await getActiveAnnouncement(supabase, artisan.id);
+  if (existing) {
+    throw new Error(
+      "Vous avez déjà une annonce en ligne. Modifiez-la ou supprimez-la avant d'en publier une nouvelle."
+    );
+  }
+
   const image_url = String(formData.get("image_url") ?? "").trim() || null;
   const title = String(formData.get("title") ?? "");
 
