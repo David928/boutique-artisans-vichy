@@ -139,6 +139,10 @@ create policy "push_subscriptions_insert" on public.push_subscriptions
 create policy "push_subscriptions_delete" on public.push_subscriptions
   for delete to anon, authenticated using (true);
 
+-- droits de base requis en plus des policies RLS (table créée hors éditeur
+-- de tables, donc sans les privilèges par défaut habituels).
+grant select, insert, delete on public.push_subscriptions to anon, authenticated;
+
 -- ---------------------------------------------------------------------------
 -- Storage : bucket public "images", un sous-dossier par slug d'artisan
 -- ---------------------------------------------------------------------------
