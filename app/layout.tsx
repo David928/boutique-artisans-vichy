@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { Header } from "@/components/Header";
 import { BottomNav } from "@/components/BottomNav";
 import { SplashScreen } from "@/components/SplashScreen";
+import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -61,6 +62,7 @@ export default function RootLayout({
     >
       <body className="flex min-h-full flex-col bg-cream text-ink">
         <SplashScreen />
+        <ServiceWorkerRegister />
         <Header />
         <main className="flex-1 pb-20">{children}</main>
         <BottomNav />

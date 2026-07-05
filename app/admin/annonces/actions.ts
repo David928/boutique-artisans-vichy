@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentArtisan } from "@/lib/current-artisan";
 import { computeExpiresAt } from "@/lib/announcement-expiry";
+import { sendPushToAll } from "@/lib/push";
 
 export async function createAnnouncement(formData: FormData) {
   const artisan = await getCurrentArtisan();
@@ -12,10 +13,11 @@ export async function createAnnouncement(formData: FormData) {
 
   const supabase = await createClient();
   const image_url = String(formData.get("image_url") ?? "").trim() || null;
+  const title = String(formData.get("title") ?? "");
 
   const { error } = await supabase.from("announcements").insert({
     artisan_id: artisan.id,
-    title: String(formData.get("title") ?? ""),
+    title,
     description: String(formData.get("description") ?? "") || null,
     image_url,
     expires_at: computeExpiresAt(formData.get("expires_at")),
@@ -25,6 +27,12 @@ export async function createAnnouncement(formData: FormData) {
 
   revalidatePath("/admin");
   revalidatePath("/nouveautes");
+
+  sendPushToAll({
+    title: `Nouveauté chez ${artisan.name}`,
+    body: title,
+    url: "/nouveautes",
+  }).catch(() => {});
 }
 
 export async function updateAnnouncement(

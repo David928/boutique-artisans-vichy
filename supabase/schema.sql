@@ -56,6 +56,18 @@ create table if not exists public.announcements (
 
 create index if not exists announcements_artisan_id_idx on public.announcements (artisan_id);
 
+-- push_subscriptions : abonnements aux notifications push des visiteurs
+-- (anonymes, pas de compte). Un visiteur peut s'abonner/se désabonner
+-- lui-même ; l'envoi des notifications se fait côté serveur via la clé
+-- service_role, qui contourne ces policies.
+create table if not exists public.push_subscriptions (
+  id uuid primary key default gen_random_uuid(),
+  endpoint text not null unique,
+  p256dh text not null,
+  auth text not null,
+  created_at timestamptz not null default now()
+);
+
 -- ---------------------------------------------------------------------------
 -- Row Level Security
 -- ---------------------------------------------------------------------------
@@ -64,6 +76,7 @@ alter table public.artisans enable row level security;
 alter table public.profiles enable row level security;
 alter table public.products enable row level security;
 alter table public.announcements enable row level security;
+alter table public.push_subscriptions enable row level security;
 
 -- artisans : lecture publique, écriture réservée au propriétaire (via profiles)
 create policy "artisans_public_read" on public.artisans
@@ -117,6 +130,14 @@ create policy "announcements_owner_delete" on public.announcements
   for delete using (
     artisan_id in (select artisan_id from public.profiles where id = auth.uid())
   );
+
+-- push_subscriptions : n'importe quel visiteur (anonyme) peut s'abonner ou
+-- se désabonner ; personne ne peut lire la liste sauf via service_role.
+create policy "push_subscriptions_insert" on public.push_subscriptions
+  for insert to anon, authenticated with check (true);
+
+create policy "push_subscriptions_delete" on public.push_subscriptions
+  for delete to anon, authenticated using (true);
 
 -- ---------------------------------------------------------------------------
 -- Storage : bucket public "images", un sous-dossier par slug d'artisan
