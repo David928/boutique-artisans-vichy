@@ -17,6 +17,54 @@ export default function InfosPage() {
         voir en boutique pour explorer l&apos;univers complet de chacun !
       </p>
 
+      <div className="mt-5 rounded-xl border border-vichy/30 bg-vichy/10 px-4 py-4 text-sm text-ink-light">
+        <p className="font-semibold text-ink">📱 Installation</p>
+        <p className="mt-1">
+          Ce site est une <strong>web app</strong>{" "}
+          : pas besoin de passer par l&apos;App Store ou le Play Store.
+          Installez-la sur votre écran d&apos;accueil pour l&apos;ouvrir
+          comme une vraie application, en plein écran.
+        </p>
+        <p className="mt-2">
+          C&apos;est important : sans installation, les{" "}
+          <strong>notifications des nouveautés et promos</strong>{" "}
+          ne fonctionnent pas sur iPhone, et l&apos;appli est bien plus
+          rapide à retrouver au quotidien une fois installée.
+        </p>
+
+        <p className="mt-4 font-semibold text-ink">Sur iPhone (Safari)</p>
+        <ol className="mt-1 list-decimal space-y-0.5 pl-5">
+          <li>Ouvrez ce site dans Safari</li>
+          <li>
+            Appuyez sur le bouton <strong>Partager</strong>{" "}
+            (le carré avec une flèche vers le haut, en bas de
+            l&apos;écran)
+          </li>
+          <li>
+            Choisissez <strong>« Sur l&apos;écran d&apos;accueil »</strong>
+          </li>
+          <li>
+            Appuyez sur <strong>Ajouter</strong>
+          </li>
+        </ol>
+
+        <p className="mt-4 font-semibold text-ink">Sur Android (Chrome)</p>
+        <ol className="mt-1 list-decimal space-y-0.5 pl-5">
+          <li>Ouvrez ce site dans Chrome</li>
+          <li>
+            Appuyez sur le menu <strong>⋮</strong>{" "}
+            (trois points, en haut à droite)
+          </li>
+          <li>
+            Choisissez <strong>« Installer l&apos;application »</strong>{" "}
+            (ou « Ajouter à l&apos;écran d&apos;accueil »)
+          </li>
+          <li>
+            Confirmez avec <strong>Installer</strong>
+          </li>
+        </ol>
+      </div>
+
       <div className="mt-5 rounded-xl border border-ink/10 bg-cream-light px-4 py-4 text-sm text-ink-light">
         <p className="font-semibold text-ink">Retrouvez-nous :</p>
         <p className="mt-1">
@@ -42,47 +90,6 @@ export default function InfosPage() {
           <li>• Mardi au samedi : 9h30 à 19h00</li>
           <li>• Dimanche : 14h30 à 19h00</li>
         </ul>
-      </div>
-
-      <div className="mt-5 rounded-xl border border-ink/10 bg-cream-light px-4 py-4 text-sm text-ink-light">
-        <p className="font-semibold text-ink">📱 Installer l&apos;application</p>
-        <p className="mt-1">
-          Ce site est une <strong>web app</strong> : pas besoin de passer par
-          l&apos;App Store ou le Play Store. Vous pouvez l&apos;ajouter à
-          l&apos;écran d&apos;accueil de votre téléphone pour l&apos;ouvrir
-          comme une vraie application, en plein écran.
-        </p>
-
-        <p className="mt-4 font-semibold text-ink">Sur iPhone (Safari)</p>
-        <ol className="mt-1 list-decimal space-y-0.5 pl-5">
-          <li>Ouvrez ce site dans Safari</li>
-          <li>
-            Appuyez sur le bouton <strong>Partager</strong> (le carré avec une
-            flèche vers le haut, en bas de l&apos;écran)
-          </li>
-          <li>
-            Choisissez <strong>« Sur l&apos;écran d&apos;accueil »</strong>
-          </li>
-          <li>
-            Appuyez sur <strong>Ajouter</strong>
-          </li>
-        </ol>
-
-        <p className="mt-4 font-semibold text-ink">Sur Android (Chrome)</p>
-        <ol className="mt-1 list-decimal space-y-0.5 pl-5">
-          <li>Ouvrez ce site dans Chrome</li>
-          <li>
-            Appuyez sur le menu <strong>⋮</strong> (trois points, en haut à
-            droite)
-          </li>
-          <li>
-            Choisissez <strong>« Installer l&apos;application »</strong> (ou
-            « Ajouter à l&apos;écran d&apos;accueil »)
-          </li>
-          <li>
-            Confirmez avec <strong>Installer</strong>
-          </li>
-        </ol>
       </div>
     </div>
   );
