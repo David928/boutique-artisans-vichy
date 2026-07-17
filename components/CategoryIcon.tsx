@@ -70,6 +70,46 @@ const PATHS: Record<string, React.ReactNode> = {
       <path d="M12 12v9M12 12 20 7.5M12 12 4 7.5" />
     </>
   ),
+  Crochet: (
+    <>
+      <circle cx="8" cy="16" r="4" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M11 13c3-1 5-3 5-6 0-2-1.5-3-3-3s-2.5 1.2-2.5 2.5c0 1 .7 1.5 1.5 1.5"
+      />
+    </>
+  ),
+  Enfants: (
+    <>
+      <rect x="9" y="9" width="6" height="11" rx="2" />
+      <path strokeLinecap="round" d="M10.5 9V6a1.5 1.5 0 0 1 3 0v3" />
+      <path strokeLinecap="round" d="M9 13h6M9 16h6" />
+    </>
+  ),
+  Résine: (
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M12 3c3 4.5 5 7.6 5 10.2a5 5 0 0 1-10 0C7 10.6 9 7.5 12 3Z"
+    />
+  ),
+  Beauté: (
+    <path
+      strokeLinejoin="round"
+      d="M12 3c.6 3.2 1.8 4.4 5 5-3.2.6-4.4 1.8-5 5-.6-3.2-1.8-4.4-5-5 3.2-.6 4.4-1.8 5-5Z"
+    />
+  ),
+  Alimentaire: (
+    <>
+      <path strokeLinecap="round" d="M8 3v6a2 2 0 0 0 4 0V3M10 9v12" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M16 3c-1.4 0-2.5 1.8-2.5 4s1.1 4 2.5 4v10"
+      />
+    </>
+  ),
 };
 
 const FALLBACK = (
