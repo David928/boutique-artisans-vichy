@@ -14,4 +14,5 @@ export const ARTISAN_CATEGORIES = [
   "Résine",
   "Beauté",
   "Alimentaire",
+  "Art",
 ] as const;

@@ -110,6 +110,19 @@ const PATHS: Record<string, React.ReactNode> = {
       />
     </>
   ),
+  Art: (
+    <>
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M12 3a9 6.5 0 1 0 0 13c1 0 1.5-.5 1.5-1.2 0-.5-.3-.8-.6-1.1-.3-.3-.5-.6-.5-1 0-.7.6-1.2 1.3-1.2H15a5 4 0 0 0 5-4C20 4.6 16.4 3 12 3Z"
+      />
+      <circle cx="8.3" cy="10" r="1" fill="currentColor" stroke="none" />
+      <circle cx="9.5" cy="7" r="1" fill="currentColor" stroke="none" />
+      <circle cx="13" cy="6.3" r="1" fill="currentColor" stroke="none" />
+      <circle cx="16" cy="8" r="1" fill="currentColor" stroke="none" />
+    </>
+  ),
 };
 
 const FALLBACK = (
