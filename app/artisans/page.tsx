@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { ArtisanBrowser } from "@/components/ArtisanBrowser";
 import type { Artisan } from "@/lib/supabase/types";
@@ -23,6 +24,12 @@ export default async function ArtisansPage() {
         Chaque artisan de la boutique a son propre métier, son histoire et
         ses créations.
       </p>
+      <Link
+        href="/produits"
+        className="mt-3 inline-block text-sm font-medium text-vichy hover:underline"
+      >
+        🛍️ Voir tous les produits plutôt que par artisan →
+      </Link>
       <div className="mt-5">
         <ArtisanBrowser artisans={artisans ?? []} />
       </div>

@@ -81,6 +81,13 @@ export default async function Home() {
         >
           📣 Voir toutes les nouveautés et promos
         </Link>
+
+        <Link
+          href="/produits"
+          className="mt-3 block rounded-full border border-ink/15 bg-cream-light py-3 text-center text-sm font-medium text-ink transition hover:border-ink/30"
+        >
+          🛍️ Voir tous les produits de la boutique
+        </Link>
       </div>
     </div>
   );
