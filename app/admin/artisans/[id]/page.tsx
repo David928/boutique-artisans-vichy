@@ -3,6 +3,7 @@ import { isSuperAdmin } from "@/lib/is-superadmin";
 import { createClient } from "@/lib/supabase/server";
 import { AdminArtisanForm } from "@/components/AdminArtisanForm";
 import { DeleteArtisanButton } from "@/components/DeleteArtisanButton";
+import { ResetPasswordButton } from "@/components/ResetPasswordButton";
 import type { Artisan } from "@/lib/supabase/types";
 
 export const metadata = {
@@ -34,6 +35,10 @@ export default async function AdminEditArtisanPage({
       <AdminArtisanForm artisan={artisan} />
 
       <div className="mt-8 border-t border-ink/10 pt-6">
+        <ResetPasswordButton artisanId={artisan.id} />
+      </div>
+
+      <div className="mt-4 border-t border-ink/10 pt-6">
         <DeleteArtisanButton artisanId={artisan.id} artisanName={artisan.name} />
       </div>
     </div>

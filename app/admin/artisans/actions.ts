@@ -4,6 +4,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isSuperAdmin } from "@/lib/is-superadmin";
+import { generatePassword } from "@/lib/generate-password";
+import { sendArtisanPasswordResetEmail } from "@/lib/email";
 
 export async function updateArtisanAsAdmin(
   artisanId: string,
@@ -60,4 +62,73 @@ export async function deleteArtisanAsAdmin(artisanId: string) {
   revalidatePath("/artisans");
   revalidatePath("/");
   redirect("/admin/artisans");
+}
+
+export type ResetPasswordState = {
+  error?: string;
+  success?: {
+    email: string;
+    password: string;
+    emailSent: boolean;
+    emailError?: string;
+  };
+};
+
+export async function resetArtisanPassword(
+  _prevState: ResetPasswordState,
+  formData: FormData
+): Promise<ResetPasswordState> {
+  if (!(await isSuperAdmin())) {
+    return { error: "Accès refusé." };
+  }
+
+  const artisanId = String(formData.get("artisanId") ?? "");
+
+  const admin = createAdminClient();
+
+  const { data: artisan } = await admin
+    .from("artisans")
+    .select("name, email")
+    .eq("id", artisanId)
+    .maybeSingle();
+
+  if (!artisan?.email) {
+    return { error: "Cet artisan n'a pas d'email enregistré." };
+  }
+
+  const { data: profile } = await admin
+    .from("profiles")
+    .select("id")
+    .eq("artisan_id", artisanId)
+    .maybeSingle();
+
+  if (!profile) {
+    return { error: "Aucun compte de connexion trouvé pour cet artisan." };
+  }
+
+  const password = generatePassword();
+
+  const { error: updateError } = await admin.auth.admin.updateUserById(
+    profile.id,
+    { password }
+  );
+
+  if (updateError) {
+    return { error: updateError.message };
+  }
+
+  const emailResult = await sendArtisanPasswordResetEmail({
+    to: artisan.email,
+    artisanName: artisan.name,
+    password,
+  });
+
+  return {
+    success: {
+      email: artisan.email,
+      password,
+      emailSent: emailResult.sent,
+      emailError: emailResult.error,
+    },
+  };
 }

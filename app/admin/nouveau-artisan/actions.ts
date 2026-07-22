@@ -1,10 +1,10 @@
 "use server";
 
-import { randomBytes } from "crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isSuperAdmin } from "@/lib/is-superadmin";
 import { slugify } from "@/lib/slugify";
 import { sendArtisanWelcomeEmail } from "@/lib/email";
+import { generatePassword } from "@/lib/generate-password";
 
 export type CreateArtisanState = {
   error?: string;
@@ -17,10 +17,6 @@ export type CreateArtisanState = {
     emailError?: string;
   };
 };
-
-function generatePassword(): string {
-  return randomBytes(9).toString("base64url");
-}
 
 export async function createArtisanWithAccount(
   _prevState: CreateArtisanState,
